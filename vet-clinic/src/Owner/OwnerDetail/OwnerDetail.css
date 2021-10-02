@@ -1,0 +1,9 @@
+.table {
+    text-align: center;
+}
+
+.table tr > * {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px dashed blue;
+}
