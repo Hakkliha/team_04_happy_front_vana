@@ -1,5 +1,10 @@
+.data-section {
+    flex-grow: 1;
+}
+
 .table {
     text-align: center;
+    width: 100%;
 }
 
 .table tr > * {

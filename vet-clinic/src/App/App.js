@@ -10,6 +10,7 @@ import Home from "../Home/Home";
 import About from "../About/About";
 import OwnerList from "../Owner/OwnerList/OwnerList";
 import { ReactComponent as Logo } from "../resources/Panda logo.svg";
+import AnimalList from "../Animal/AnimalList/AnimalList";
 
 class App extends React.Component {
     constructor(props) {
@@ -23,17 +24,25 @@ class App extends React.Component {
         return (
             <Router>
                 <div id="main-container">
-                    <ul id="navbar">
-                        <li>
-                            <Link to="/" id="nav-logo-link"><Logo id="nav-logo" /></Link>
-                        </li>
-                        <li>
-                            <Link to="/owners">Owners</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                    </ul>
+                    <div id="navbar">
+                        <ul className="navbar-list">
+                            <li>
+                                <Link to="/" id="nav-logo-link"><Logo id="nav-logo" /></Link>
+                            </li>
+                            <li>
+                                <Link to="/owners">Owners</Link>
+                            </li>
+                            <li>
+                                <Link to="/animals">Animals</Link>
+                            </li>
+                            <li>
+                                <Link to="/profile">Profile</Link>
+                            </li>
+                            <li>
+                                <Link to="/about">About</Link>
+                            </li>
+                        </ul>
+                    </div>
 
                     <Switch>
                         <Route path="/about">
@@ -41,6 +50,9 @@ class App extends React.Component {
                         </Route>
                         <Route path="/owners">
                             <OwnerList />
+                        </Route>
+                        <Route path="/animals">
+                            <AnimalList />
                         </Route>
                         <Route path="/">
                             <Home />

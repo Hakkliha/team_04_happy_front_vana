@@ -1,0 +1,18 @@
+.main-content {
+    width: 93%;
+}
+
+.list-view {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.list-w-header {
+    width: 60%;
+    border-right: 2px solid darkgray;
+    padding: 0 0 0 2rem;
+}
+
+.notice {
+    padding: 1rem;
+}
