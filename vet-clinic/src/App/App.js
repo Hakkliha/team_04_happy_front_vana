@@ -11,6 +11,7 @@ import About from "../About/About";
 import OwnerList from "../Owner/OwnerList/OwnerList";
 import { ReactComponent as Logo } from "../resources/Panda logo.svg";
 import AnimalList from "../Animal/AnimalList/AnimalList";
+import 'antd/dist/antd.css';
 
 class App extends React.Component {
     constructor(props) {
@@ -34,9 +35,6 @@ class App extends React.Component {
                             </li>
                             <li>
                                 <Link to="/animals">Animals</Link>
-                            </li>
-                            <li>
-                                <Link to="/profile">Profile</Link>
                             </li>
                             <li>
                                 <Link to="/about">About</Link>

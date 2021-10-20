@@ -2,6 +2,21 @@
     width: 93%;
 }
 
+.title-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-new-button {
+    margin-right: 1rem;
+    background-color: hotpink;
+    color: white;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+}
+
 .list-view {
     display: flex;
     flex-flow: row nowrap;

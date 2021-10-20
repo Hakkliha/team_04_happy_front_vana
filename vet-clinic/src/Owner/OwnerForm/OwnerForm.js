@@ -1,5 +1,6 @@
 import React from "react";
 import "./OwnerForm.css";
+import axios from "axios";
 
 class OwnerForm extends React.Component {
     constructor(props) {
@@ -26,9 +27,23 @@ class OwnerForm extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event) {
-        alert(JSON.stringify(this.state))
-        event.preventDefault();
+    async handleSubmit() {
+        let statuses = [];
+        let reponse = await axios({
+            method: 'post',
+            url: 'http://localhost:8080/owners',
+            data: this.state
+        })
+            .then(function (response) {
+                console.log(response)
+                return response.status + ": User Created";
+            })
+            .catch(function (response) {
+                console.log(response)
+                return response.status + ": Creation failed";
+            });
+        alert(reponse)
+
     }
 
     render() {
@@ -125,10 +140,10 @@ class OwnerForm extends React.Component {
                     </tr>
                     <tr>
                         <td>
-                            <input type="reset"/>
+
                         </td>
                         <td>
-                            <input type="submit" value="Submit" />
+                            <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
                         </td>
                     </tr>
                 </table>
