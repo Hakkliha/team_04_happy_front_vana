@@ -3,10 +3,10 @@ import "./OwnerList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import OwnerDetail from "../OwnerDetail/OwnerDetail";
 import OwnerForm from "../OwnerForm/OwnerForm";
-import {OwnersData} from "./OwnerTestData";
 import axios from "axios";
 import {Tooltip, Button} from "antd";
-import { SearchOutlined, RightCircleTwoTone } from '@ant-design/icons';
+import { SearchOutlined, RightCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import OwnerEdit from "../OwnerEdit/OwnerEdit";
 
 class OwnerList extends React.Component {
     constructor(props) {
@@ -19,6 +19,23 @@ class OwnerList extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.reloadList = this.reloadList.bind(this);
+    }
+
+    async reloadList() {
+        let resData = await axios({
+            method: 'get',
+            url: 'http://localhost:8080/owners'
+        })
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                console.log(response)
+                return [];
+            });
+
+        this.setState({listOfOwners: resData});
     }
 
    async componentDidMount() {
@@ -30,11 +47,11 @@ class OwnerList extends React.Component {
                 return response.data;
             })
             .catch(function (response) {
+                console.log(response)
                 return [];
             });
 
         this.setState({listOfOwners: resData});
-        console.log(JSON.stringify(this.state))
     }
 
     handleChange(event) {
@@ -43,7 +60,6 @@ class OwnerList extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        alert(JSON.stringify(this.state.name));
     }
 
     render() {
@@ -59,6 +75,7 @@ class OwnerList extends React.Component {
                         <Route path={`${match.url}/create`}>
                             <OwnerForm/>
                         </Route>
+                        <Route path={`${match.path}/:topicId/edit`} render={(props) => <OwnerEdit {...props} listReload={this.reloadList} />}/>
                         <Route path={match.path}>
                             <form onSubmit={this.handleSubmit} >
                                 <input type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.handleChange}/>
@@ -66,10 +83,11 @@ class OwnerList extends React.Component {
                                     <Button shape="circle" icon={<SearchOutlined />} onClick={this.handleSubmit}/>
                                 </Tooltip>
                             </form>
-                            <table>
+                            <table className="link-table">
                                 <thead>
                                 <tr>
                                     <td><b>Name</b></td>
+                                    <td>&nbps;</td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -77,6 +95,9 @@ class OwnerList extends React.Component {
                                     <tr key={element.id}>
                                         <td>
                                             <Link to={`${match.url}/${element.id}`}><RightCircleTwoTone /> {element.firstName} {element.lastName}</Link>
+                                        </td>
+                                        <td>
+                                            <Link to={`${match.url}/${element.id}/edit`} className="edit-btn"><EditTwoTone /></Link>
                                         </td>
                                     </tr>
                                 )}

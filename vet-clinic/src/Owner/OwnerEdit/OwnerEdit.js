@@ -1,11 +1,14 @@
 import React from "react";
-import "./OwnerForm.css";
+import "./OwnerEdit.css";
 import axios from "axios";
+import {Redirect} from "react-router-dom";
 
-class OwnerForm extends React.Component {
+
+class OwnerEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             firstName: '',
             lastName: '',
             phone: '',
@@ -16,11 +19,13 @@ class OwnerForm extends React.Component {
             city: '',
             postalIndex: '',
             county: '',
-            country: ''
+            country: '',
+            deleted: false
         };
-
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleChange(event) {
@@ -29,25 +34,78 @@ class OwnerForm extends React.Component {
 
     async handleSubmit() {
         let reponse = await axios({
-            method: 'post',
-            url: 'http://localhost:8080/owners',
+            method: 'put',
+            url: `http://localhost:8080/owners/`,
             data: this.state
         })
             .then(function (response) {
                 console.log(response)
-                return response.status + ": User Created";
+                return response.status + ": Update Successful";
             })
             .catch(function (response) {
                 console.log(response)
-                return response.status + ": Creation failed";
+                return response.status + ": Update failed";
             });
         alert(reponse)
 
     }
 
+    async componentDidMount() {
+        if (this.state.id !== this.props.match.params.topicId){
+            let resData = await axios({
+                method: 'get',
+                url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+            })
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    return response.data;
+                });
+            this.setState({
+                id: this.props.match.params.topicId,
+                firstName: resData.firstName,
+                lastName: resData.lastName,
+                phone: resData.phone,
+                email: resData.email,
+                street: resData.street,
+                house: resData.house,
+                apartment: resData.apartment,
+                city: resData.city,
+                postalIndex: resData.postalIndex,
+                county: resData.county,
+                country: resData.country
+            })
+        }
+    }
+
+    async handleDelete() {
+
+        let res = await axios({
+            method: 'delete',
+            url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+        })
+            .then(function (response) {
+                console.log(response)
+                return true
+            })
+            .catch(function (response) {
+                console.log(response)
+                return false
+            });
+        if (res) {
+            this.props.listReload()
+            this.setState({deleted: true})
+        }
+    }
+
     render() {
         return (
+            <div>
+                {this.state.deleted ? <Redirect to='/owners' /> :
+            <div>
             <form onSubmit={this.handleSubmit} className="input-form">
+                <h2>Edit</h2>
                 <table>
                     <tbody>
                     <tr>
@@ -142,7 +200,6 @@ class OwnerForm extends React.Component {
                     <tfoot>
                     <tr>
                         <td>
-
                         </td>
                         <td>
                             <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
@@ -151,8 +208,11 @@ class OwnerForm extends React.Component {
                     </tfoot>
                 </table>
             </form>
-        );
+                <button className="ant-btn-danger" onClick={this.handleDelete}>Delete</button>
+            </div> }
+            </div>
+        )
     }
 }
 
-export default OwnerForm;
+export default OwnerEdit;

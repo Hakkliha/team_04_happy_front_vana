@@ -31,3 +31,16 @@
 .notice {
     padding: 1rem;
 }
+
+.edit-btn {
+    float: right;
+}
+
+.link-table {
+    max-height: max-content;
+    overflow-y: scroll;
+}
+
+.link-table td {
+    padding: 0 0.25rem;
+}
