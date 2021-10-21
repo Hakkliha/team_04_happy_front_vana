@@ -28,6 +28,7 @@ class OwnerForm extends React.Component {
     }
 
     async handleSubmit() {
+        this.setState({fullName: this.state.firstName + " " + this.state.lastName})
         let reponse = await axios({
             method: 'post',
             url: 'http://localhost:8080/owners',

@@ -1,0 +1,15 @@
+.main-content-home {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0 0 0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-wallpaper {
+    width: 100%;
+    object-fit: cover;
+    height: 38.5rem;
+}

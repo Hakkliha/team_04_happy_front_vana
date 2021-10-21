@@ -1,33 +1,80 @@
 import React from "react";
 import "./AnimalList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
-import AnimalForm from "../AnimalForm/AnimalForm";
 import AnimalDetail from "../AnimalDetail/AnimalDetail";
-import {AnimalData} from "./AnimalTestData";
+import AnimalForm from "../AnimalForm/AnimalForm";
 import axios from "axios";
+import {Tooltip, Button} from "antd";
+import { SearchOutlined, RightCircleTwoTone, EditTwoTone, CloseOutlined } from '@ant-design/icons';
+import AnimalEdit from "../AnimalEdit/AnimalEdit";
 
 class AnimalList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {name: ''};
+        this.state = {
+            name: '',
+            listOfAnimals: [],
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.reloadList = this.reloadList.bind(this);
+    }
+
+    async reloadList() {
+        this.setState({name: ''})
+        let resData = await axios({
+            method: 'get',
+            url: 'http://localhost:8080/animals'
+        })
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                console.log(response)
+                return [];
+            });
+
+        this.setState({listOfAnimals: resData});
+    }
+
+    async componentDidMount() {
+        let resData = await axios({
+            method: 'get',
+            url: 'http://localhost:8080/animals'
+        })
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                console.log(response)
+                return [];
+            });
+        console.log(resData)
+        this.setState({listOfAnimals: resData});
     }
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
-        axios({
+        let resData = await axios({
             method: 'get',
-            url: 'http://localhost:8080/test/clients'
+            url: `http://localhost:8080/animals/search?name=${this.state.name}`
         })
             .then(function (response) {
-                console.log(JSON.stringify(response.data))
+                console.log(response)
+                return response.data;
+            })
+            .catch(function (response) {
+                console.log(response)
+                return [];
             });
+
+        this.setState({listOfAnimals: resData});
     }
 
     render() {
@@ -43,22 +90,32 @@ class AnimalList extends React.Component {
                         <Route path={`${match.url}/create`}>
                             <AnimalForm/>
                         </Route>
+                        <Route path={`${match.path}/:topicId/edit`} render={(props) => <AnimalEdit {...props} listReload={this.reloadList} />}/>
                         <Route path={match.path}>
                             <form onSubmit={this.handleSubmit} >
                                 <input type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.handleChange}/>
-                                <input type="submit" value="Search"/>
+                                <Tooltip title="search">
+                                    <Button shape="circle" icon={<SearchOutlined />} onClick={this.handleSubmit}/>
+                                </Tooltip>
+                                <Tooltip title="clear">
+                                    <Button shape="circle" icon={<CloseOutlined />} onClick={this.reloadList}/>
+                                </Tooltip>
                             </form>
-                            <table>
+                            <table className="link-table">
                                 <thead>
                                 <tr>
                                     <td><b>Name</b></td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {AnimalData.map(element =>
+                                {this.state.listOfAnimals.map(element =>
                                     <tr key={element.id}>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}`}>{element.name}</Link>
+                                            <Link to={`${match.url}/${element.id}`}><RightCircleTwoTone /> {element.species} {element.name}</Link>
+                                        </td>
+                                        <td>
+                                            <Link to={`${match.url}/${element.id}/edit`} className="edit-btn"><EditTwoTone /></Link>
                                         </td>
                                     </tr>
                                 )}
@@ -77,7 +134,7 @@ class AnimalList extends React.Component {
                     <Route path={`${match.path}/create`}>
 
                     </Route>
-                    <Route path={`${match.path}/:topicId`} children={<AnimalDetail/>}/>
+                    <Route path={`${match.path}/:topicId`} render={(props) => <AnimalDetail {...props} />}/>
                     <Route path={match.path}>
                         <h3 className="notice">Please select an Animal.</h3>
                     </Route>

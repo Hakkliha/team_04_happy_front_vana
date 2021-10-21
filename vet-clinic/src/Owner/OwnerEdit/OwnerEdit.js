@@ -33,6 +33,7 @@ class OwnerEdit extends React.Component {
     }
 
     async handleSubmit() {
+        this.setState({fullName: this.state.firstName + " " + this.state.lastName})
         let reponse = await axios({
             method: 'put',
             url: `http://localhost:8080/owners/`,

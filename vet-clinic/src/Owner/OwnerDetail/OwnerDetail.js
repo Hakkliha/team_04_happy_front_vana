@@ -90,10 +90,10 @@ class OwnerDetail extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    {/*<tr>
                         <td>ID</td>
                         <td>{this.state.id}</td>
-                    </tr>
+                    </tr>*/}
                     <tr>
                         <td>First Name</td>
                         <td>{this.state.firstName}</td>

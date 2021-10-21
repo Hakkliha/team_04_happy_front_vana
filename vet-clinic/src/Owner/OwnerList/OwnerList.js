@@ -5,7 +5,7 @@ import OwnerDetail from "../OwnerDetail/OwnerDetail";
 import OwnerForm from "../OwnerForm/OwnerForm";
 import axios from "axios";
 import {Tooltip, Button} from "antd";
-import { SearchOutlined, RightCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { SearchOutlined, RightCircleTwoTone, EditTwoTone, CloseOutlined } from '@ant-design/icons';
 import OwnerEdit from "../OwnerEdit/OwnerEdit";
 
 class OwnerList extends React.Component {
@@ -23,6 +23,7 @@ class OwnerList extends React.Component {
     }
 
     async reloadList() {
+        this.setState({name: ''})
         let resData = await axios({
             method: 'get',
             url: 'http://localhost:8080/owners'
@@ -58,8 +59,22 @@ class OwnerList extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
+        let resData = await axios({
+            method: 'get',
+            url: `http://localhost:8080/owners/search?fullName=${this.state.name}`
+        })
+            .then(function (response) {
+                console.log(response)
+                return response.data;
+            })
+            .catch(function (response) {
+                console.log(response)
+                return [];
+            });
+
+        this.setState({listOfOwners: resData});
     }
 
     render() {
@@ -82,12 +97,15 @@ class OwnerList extends React.Component {
                                 <Tooltip title="search">
                                     <Button shape="circle" icon={<SearchOutlined />} onClick={this.handleSubmit}/>
                                 </Tooltip>
+                                <Tooltip title="clear">
+                                    <Button shape="circle" icon={<CloseOutlined />} onClick={this.reloadList}/>
+                                </Tooltip>
                             </form>
                             <table className="link-table">
                                 <thead>
                                 <tr>
                                     <td><b>Name</b></td>
-                                    <td>&nbps;</td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 </tr>
                                 </thead>
                                 <tbody>

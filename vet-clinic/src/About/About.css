@@ -1,0 +1,36 @@
+.main-content-about {
+    text-align: center;
+    padding: 1rem;
+}
+
+.team-lineup {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.team-member-profile {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.team-member-profile h3 {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.team-member-profile h4 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.team-member-image {
+    --dimension: 15rem;
+    border-radius: 50%;
+    height: var(--dimension);
+    width: var(--dimension);
+    object-fit: cover;
+}

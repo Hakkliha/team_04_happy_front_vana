@@ -1,5 +1,6 @@
 import React from "react";
 import "./AnimalForm.css";
+import axios from "axios";
 
 class AnimalForm extends React.Component {
     constructor(props) {
@@ -22,15 +23,30 @@ class AnimalForm extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    handleSubmit(event) {
-        alert(JSON.stringify(this.state))
-        event.preventDefault();
+    async handleSubmit() {
+        let gender = await this.state.gender.toUpperCase()
+        this.setState({gender: gender})
+        let reponse = await axios({
+            method: 'post',
+            url: 'http://localhost:8080/animals',
+            data: this.state
+        })
+            .then(function (response) {
+                console.log(response)
+                return response.status + ": Animal Created";
+            })
+            .catch(function (response) {
+                console.log(response)
+                return response.status + ": Creation Failed";
+            });
+        alert(reponse)
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit} className="input-form">
                 <table>
+                    <tbody>
                     <tr>
                         <td>
                             Name
@@ -52,7 +68,7 @@ class AnimalForm extends React.Component {
                             Species
                         </td>
                         <td>
-                            <input type="text" name="species" value={this.state.species} onChange={this.handleChange} placeholder="Bird"/>
+                            <input type="text" name="species" value={this.state.species} onChange={this.handleChange} placeholder="Species"/>
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +76,7 @@ class AnimalForm extends React.Component {
                             Breed
                         </td>
                         <td>
-                            <input type="text" name="breed" value={this.state.breed} onChange={this.handleChange} placeholder="Kingfisher"/>
+                            <input type="text" name="breed" value={this.state.breed} onChange={this.handleChange} placeholder="Breed"/>
                         </td>
                     </tr>
                     <tr>
@@ -68,7 +84,7 @@ class AnimalForm extends React.Component {
                             Chip Number
                         </td>
                         <td>
-                            <input type="text" name="chipNr" value={this.state.chipNr} onChange={this.handleChange} placeholder="4h64nk72nkn457vycf3"/>
+                            <input type="text" name="chipNr" value={this.state.chipNr} onChange={this.handleChange} placeholder="Chip Number"/>
                         </td>
                     </tr>
                     <tr>
@@ -76,7 +92,7 @@ class AnimalForm extends React.Component {
                             Gender
                         </td>
                         <td>
-                            <input type="text" name="gender" value={this.state.gender} onChange={this.handleChange} placeholder="Male"/>
+                            <input type="text" name="gender" value={this.state.gender} onChange={this.handleChange} placeholder="Gender"/>
                         </td>
                     </tr>
                     <tr>
@@ -84,17 +100,20 @@ class AnimalForm extends React.Component {
                             Weight
                         </td>
                         <td>
-                            <input type="number" name="weight" value={this.state.weight} onChange={this.handleChange} placeholder="400"/>g
+                            <input type="number" name="weight" value={this.state.weight} onChange={this.handleChange} placeholder="Weight"/>
                         </td>
                     </tr>
+                    </tbody>
+                    <tfoot>
                     <tr>
                         <td>
-                            <input type="reset"/>
+
                         </td>
                         <td>
-                            <input type="submit" value="Submit" />
+                            <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
                         </td>
                     </tr>
+                    </tfoot>
                 </table>
             </form>
         );
