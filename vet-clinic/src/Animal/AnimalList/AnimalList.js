@@ -4,8 +4,8 @@ import {Link, Route, Switch, withRouter} from "react-router-dom";
 import AnimalDetail from "../AnimalDetail/AnimalDetail";
 import AnimalForm from "../AnimalForm/AnimalForm";
 import axios from "axios";
-import {Tooltip, Button} from "antd";
-import { SearchOutlined, RightCircleTwoTone, EditTwoTone, CloseOutlined } from '@ant-design/icons';
+import {Button, Tooltip} from "antd";
+import {CloseOutlined, EditTwoTone, RightCircleTwoTone, SearchOutlined} from '@ant-design/icons';
 import AnimalEdit from "../AnimalEdit/AnimalEdit";
 
 class AnimalList extends React.Component {
@@ -90,15 +90,17 @@ class AnimalList extends React.Component {
                         <Route path={`${match.url}/create`}>
                             <AnimalForm/>
                         </Route>
-                        <Route path={`${match.path}/:topicId/edit`} render={(props) => <AnimalEdit {...props} listReload={this.reloadList} />}/>
+                        <Route path={`${match.path}/:topicId/edit`}
+                               render={(props) => <AnimalEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
-                            <form onSubmit={this.handleSubmit} >
-                                <input type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                            <form onSubmit={this.handleSubmit}>
+                                <input type="text" placeholder="Name" name="name" value={this.state.name}
+                                       onChange={this.handleChange}/>
                                 <Tooltip title="search">
-                                    <Button shape="circle" icon={<SearchOutlined />} onClick={this.handleSubmit}/>
+                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}/>
                                 </Tooltip>
                                 <Tooltip title="clear">
-                                    <Button shape="circle" icon={<CloseOutlined />} onClick={this.reloadList}/>
+                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList}/>
                                 </Tooltip>
                             </form>
                             <table className="link-table">
@@ -112,10 +114,13 @@ class AnimalList extends React.Component {
                                 {this.state.listOfAnimals.map(element =>
                                     <tr key={element.id}>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}`}><RightCircleTwoTone /> {element.species} {element.name}</Link>
+                                            <Link
+                                                to={`${match.url}/${element.id}`}><RightCircleTwoTone/> {element.species} {element.name}
+                                            </Link>
                                         </td>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}/edit`} className="edit-btn"><EditTwoTone /></Link>
+                                            <Link to={`${match.url}/${element.id}/edit`}
+                                                  className="edit-btn"><EditTwoTone/></Link>
                                         </td>
                                     </tr>
                                 )}

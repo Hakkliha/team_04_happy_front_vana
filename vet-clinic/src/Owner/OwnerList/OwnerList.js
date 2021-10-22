@@ -4,8 +4,8 @@ import {Link, Route, Switch, withRouter} from "react-router-dom";
 import OwnerDetail from "../OwnerDetail/OwnerDetail";
 import OwnerForm from "../OwnerForm/OwnerForm";
 import axios from "axios";
-import {Tooltip, Button} from "antd";
-import { SearchOutlined, RightCircleTwoTone, EditTwoTone, CloseOutlined } from '@ant-design/icons';
+import {Button, Tooltip} from "antd";
+import {CloseOutlined, EditTwoTone, RightCircleTwoTone, SearchOutlined} from '@ant-design/icons';
 import OwnerEdit from "../OwnerEdit/OwnerEdit";
 
 class OwnerList extends React.Component {
@@ -39,7 +39,7 @@ class OwnerList extends React.Component {
         this.setState({listOfOwners: resData});
     }
 
-   async componentDidMount() {
+    async componentDidMount() {
         let resData = await axios({
             method: 'get',
             url: 'http://localhost:8080/owners'
@@ -90,15 +90,17 @@ class OwnerList extends React.Component {
                         <Route path={`${match.url}/create`}>
                             <OwnerForm/>
                         </Route>
-                        <Route path={`${match.path}/:topicId/edit`} render={(props) => <OwnerEdit {...props} listReload={this.reloadList} />}/>
+                        <Route path={`${match.path}/:topicId/edit`}
+                               render={(props) => <OwnerEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
-                            <form onSubmit={this.handleSubmit} >
-                                <input type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                            <form onSubmit={this.handleSubmit}>
+                                <input type="text" placeholder="Name" name="name" value={this.state.name}
+                                       onChange={this.handleChange}/>
                                 <Tooltip title="search">
-                                    <Button shape="circle" icon={<SearchOutlined />} onClick={this.handleSubmit}/>
+                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}/>
                                 </Tooltip>
                                 <Tooltip title="clear">
-                                    <Button shape="circle" icon={<CloseOutlined />} onClick={this.reloadList}/>
+                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList}/>
                                 </Tooltip>
                             </form>
                             <table className="link-table">
@@ -112,10 +114,13 @@ class OwnerList extends React.Component {
                                 {this.state.listOfOwners.map(element =>
                                     <tr key={element.id}>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}`}><RightCircleTwoTone /> {element.firstName} {element.lastName}</Link>
+                                            <Link
+                                                to={`${match.url}/${element.id}`}><RightCircleTwoTone/> {element.firstName} {element.lastName}
+                                            </Link>
                                         </td>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}/edit`} className="edit-btn"><EditTwoTone /></Link>
+                                            <Link to={`${match.url}/${element.id}/edit`}
+                                                  className="edit-btn"><EditTwoTone/></Link>
                                         </td>
                                     </tr>
                                 )}

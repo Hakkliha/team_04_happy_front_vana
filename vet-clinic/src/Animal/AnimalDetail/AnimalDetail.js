@@ -50,7 +50,7 @@ class AnimalDetail extends React.Component {
 
 
     async componentDidUpdate() {
-        if (this.state.id !== this.props.match.params.topicId){
+        if (this.state.id !== this.props.match.params.topicId) {
             let resData = await axios({
                 method: 'get',
                 url: `http://localhost:8080/animals/${this.props.match.params.topicId}`
@@ -84,10 +84,6 @@ class AnimalDetail extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {/*<tr>
-                        <td>ID</td>
-                        <td>{this.state.id}</td>
-                    </tr>*/}
                     <tr>
                         <td>Name</td>
                         <td>{this.state.name}</td>

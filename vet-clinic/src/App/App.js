@@ -1,15 +1,10 @@
 import React from "react";
 import "./App.css";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import Home from "../Home/Home";
 import About from "../About/About";
 import OwnerList from "../Owner/OwnerList/OwnerList";
-import { ReactComponent as Logo } from "../resources/Panda logo.svg";
+import {ReactComponent as Logo} from "../resources/Panda logo.svg";
 import AnimalList from "../Animal/AnimalList/AnimalList";
 import 'antd/dist/antd.css';
 

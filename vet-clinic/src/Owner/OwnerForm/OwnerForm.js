@@ -56,7 +56,8 @@ class OwnerForm extends React.Component {
                             First Name
                         </td>
                         <td>
-                            <input type="text" name="firstName" value={this.state.firstName} onChange={this.handleChange} placeholder="First Name"/>
+                            <input type="text" name="firstName" value={this.state.firstName}
+                                   onChange={this.handleChange} placeholder="First Name"/>
                         </td>
                     </tr>
                     <tr>
@@ -64,7 +65,8 @@ class OwnerForm extends React.Component {
                             Last Name
                         </td>
                         <td>
-                            <input type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange} placeholder="Last Name"/>
+                            <input type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange}
+                                   placeholder="Last Name"/>
                         </td>
                     </tr>
                     <tr>
@@ -72,7 +74,8 @@ class OwnerForm extends React.Component {
                             Phone
                         </td>
                         <td>
-                            <input type="text" name="phone" value={this.state.phone} onChange={this.handleChange} placeholder="+372 5698 4201"/>
+                            <input type="text" name="phone" value={this.state.phone} onChange={this.handleChange}
+                                   placeholder="+372 5698 4201"/>
                         </td>
                     </tr>
                     <tr>
@@ -80,7 +83,8 @@ class OwnerForm extends React.Component {
                             E-Mail
                         </td>
                         <td>
-                            <input type="email" name="email" value={this.state.email} onChange={this.handleChange} placeholder="andero@raava.ee"/>
+                            <input type="email" name="email" value={this.state.email} onChange={this.handleChange}
+                                   placeholder="andero@raava.ee"/>
                         </td>
                     </tr>
                     <tr>
@@ -88,7 +92,8 @@ class OwnerForm extends React.Component {
                             Street
                         </td>
                         <td>
-                            <input type="text" name="street" value={this.state.street} onChange={this.handleChange} placeholder="Kuldnoka street"/>
+                            <input type="text" name="street" value={this.state.street} onChange={this.handleChange}
+                                   placeholder="Kuldnoka street"/>
                         </td>
                     </tr>
                     <tr>
@@ -96,7 +101,8 @@ class OwnerForm extends React.Component {
                             House
                         </td>
                         <td>
-                            <input type="text" name="house" value={this.state.house} onChange={this.handleChange} placeholder="4B"/>
+                            <input type="text" name="house" value={this.state.house} onChange={this.handleChange}
+                                   placeholder="4B"/>
                         </td>
                     </tr>
                     <tr>
@@ -104,7 +110,8 @@ class OwnerForm extends React.Component {
                             Apartment
                         </td>
                         <td>
-                            <input type="text" name="apartment" value={this.state.apartment} onChange={this.handleChange} placeholder="103"/>
+                            <input type="text" name="apartment" value={this.state.apartment}
+                                   onChange={this.handleChange} placeholder="103"/>
                         </td>
                     </tr>
                     <tr>
@@ -112,7 +119,8 @@ class OwnerForm extends React.Component {
                             City
                         </td>
                         <td>
-                            <input type="text" name="city" value={this.state.city} onChange={this.handleChange} placeholder="Tallinn"/>
+                            <input type="text" name="city" value={this.state.city} onChange={this.handleChange}
+                                   placeholder="Tallinn"/>
                         </td>
                     </tr>
                     <tr>
@@ -120,7 +128,8 @@ class OwnerForm extends React.Component {
                             ZIP Code
                         </td>
                         <td>
-                            <input type="text" name="postalIndex" value={this.state.postalIndex} onChange={this.handleChange} placeholder="19113"/>
+                            <input type="text" name="postalIndex" value={this.state.postalIndex}
+                                   onChange={this.handleChange} placeholder="19113"/>
                         </td>
                     </tr>
                     <tr>
@@ -128,7 +137,8 @@ class OwnerForm extends React.Component {
                             County
                         </td>
                         <td>
-                            <input type="text" name="county" value={this.state.county} onChange={this.handleChange} placeholder="Harjumaa"/>
+                            <input type="text" name="county" value={this.state.county} onChange={this.handleChange}
+                                   placeholder="Harjumaa"/>
                         </td>
                     </tr>
                     <tr>
@@ -136,7 +146,8 @@ class OwnerForm extends React.Component {
                             Country
                         </td>
                         <td>
-                            <input type="text" name="country" value={this.state.country} onChange={this.handleChange} placeholder="Estonia"/>
+                            <input type="text" name="country" value={this.state.country} onChange={this.handleChange}
+                                   placeholder="Estonia"/>
                         </td>
                     </tr>
                     </tbody>

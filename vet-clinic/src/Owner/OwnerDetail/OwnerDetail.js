@@ -24,35 +24,35 @@ class OwnerDetail extends React.Component {
     }
 
     async componentDidMount() {
-            let resData = await axios({
-                method: 'get',
-                url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+        let resData = await axios({
+            method: 'get',
+            url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+        })
+            .then(function (response) {
+                return response.data;
             })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
-            this.setState({
-                id: this.props.match.params.topicId,
-                firstName: resData.firstName,
-                lastName: resData.lastName,
-                phone: resData.phone,
-                email: resData.email,
-                street: resData.street,
-                house: resData.house,
-                apartment: resData.apartment,
-                city: resData.city,
-                postalIndex: resData.postalIndex,
-                county: resData.county,
-                country: resData.country
-            })
+            .catch(function (response) {
+                return response.data;
+            });
+        this.setState({
+            id: this.props.match.params.topicId,
+            firstName: resData.firstName,
+            lastName: resData.lastName,
+            phone: resData.phone,
+            email: resData.email,
+            street: resData.street,
+            house: resData.house,
+            apartment: resData.apartment,
+            city: resData.city,
+            postalIndex: resData.postalIndex,
+            county: resData.county,
+            country: resData.country
+        })
     }
 
 
     async componentDidUpdate() {
-        if (this.state.id !== this.props.match.params.topicId){
+        if (this.state.id !== this.props.match.params.topicId) {
             let resData = await axios({
                 method: 'get',
                 url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
@@ -79,7 +79,7 @@ class OwnerDetail extends React.Component {
             })
         }
     }
-    
+
     render() {
         return (
             <div className="data-section">
@@ -90,10 +90,6 @@ class OwnerDetail extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {/*<tr>
-                        <td>ID</td>
-                        <td>{this.state.id}</td>
-                    </tr>*/}
                     <tr>
                         <td>First Name</td>
                         <td>{this.state.firstName}</td>
