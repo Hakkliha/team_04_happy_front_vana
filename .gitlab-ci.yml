@@ -1,7 +1,18 @@
 stages:
   - build
+  - test
 #  - docker-build
   - deploy
+
+test:
+  stage: test
+  image: node
+  tags:
+    - happy
+  script:
+    - echo "Testing App"
+    - CI=true yarn test
+    - echo "Test successfully!"
 
 build:
   stage: build
@@ -10,8 +21,8 @@ build:
     - happy
   script:
     - echo "Start building App!"
-    - npm install
-    - npm build
+    - yarn install
+    - yarn build
     - echo "Build successfully!"
   artifacts:
     expire_in: 1 hour
@@ -35,13 +46,9 @@ build:
 
 deploy:
   stage: deploy
-  image: kroniak/ssh-client
   tags:
     - happy
-  before_script:
-    - echo "deploying app"
   script:
-    - chmod 400 $SSH_PRIVATE_KEY
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker pull registry.gitlab.com/alfredomartinezzz/budgefy"
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker stop budgefycontainer || true && docker rm budgefycontainer || true"
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker run -p 3001:80 -d --name budgefycontainer registry.gitlab.com/alfredomartinezzz/budgefy"
+    - mkdir -p ~/front-deployment
+    - rm -rf ~/front-deployment/*
+    - cp -r dist/build/. ~/front-deployment
