@@ -27,7 +27,7 @@ build:
   artifacts:
     expire_in: 1 hour
     paths:
-      - build
+      - build/
       - node_modules/
 
 #docker-build:
