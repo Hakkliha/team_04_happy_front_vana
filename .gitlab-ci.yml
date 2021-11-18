@@ -51,4 +51,4 @@ deploy:
   script:
     - mkdir -p ~/front-deployment
     - rm -rf ~/front-deployment/*
-    - cp -r build/ ~/front-deployment
+    - cp -r build/. ~/front-deployment
