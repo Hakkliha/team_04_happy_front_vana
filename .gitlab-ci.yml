@@ -7,8 +7,6 @@ build vet-clinic:
   image: node:12-alpine
   cache:start
 
-    paths:
-      - node_modules
   artifacts:
     paths:
       - dist
