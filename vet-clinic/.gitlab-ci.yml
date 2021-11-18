@@ -1,0 +1,27 @@
+stages:
+  - build
+  - deploy
+
+build vet-clinic:
+  stage: build
+  image: node:12-alpine
+  cache:
+    paths:
+      - node_modules
+  artifacts:
+    paths:
+      - dist
+  tags:
+    - happy
+  script:
+    - yarn install
+    - yarn run build
+
+deploy vet-clinic:
+  stage: deploy
+  tags:
+    - vet-clinic
+  script:
+    - mkdir -p ~/front-deployment
+    - rm -rf ~/front-deployment/*
+    - cp -r dist/angular-heroes/. ~/front-deployment

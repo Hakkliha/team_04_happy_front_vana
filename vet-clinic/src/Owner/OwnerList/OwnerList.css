@@ -11,7 +11,7 @@
 
 .create-new-button {
     margin-right: 1rem;
-    background-color: hotpink;
+    background-color: #0B67B2;
     color: white;
     border-radius: 1rem;
     padding: 0.5rem 1rem;
@@ -20,6 +20,19 @@
 .list-view {
     display: flex;
     flex-flow: row nowrap;
+}
+
+.search-box input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+}
+
+.search-box .search-btn {
+    --btn-size: 2.5rem;
+    margin-left: 0.5rem;
+    height: var(--btn-size);
+    width: var(--btn-size);
 }
 
 .list-w-header {
@@ -32,15 +45,55 @@
     padding: 1rem;
 }
 
+.link-table tbody td.button-padding {
+    padding: 0;
+    height: inherit;
+}
+
 .edit-btn {
-    float: right;
+    color: #0B67B2;
+}
+
+.go-btn {
+    color: #0B67B2;
 }
 
 .link-table {
     max-height: max-content;
     overflow-y: scroll;
+    width: 95%;
+    min-width: 20rem;
+    border-collapse:separate;
+    border-spacing: 0 0.5rem;
 }
 
 .link-table td {
-    padding: 0 0.25rem;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.link-table tbody td {
+    font-size: 1.25rem;
+}
+
+.info-box-tr {
+    --border-colors: 1px solid lightgray;
+}
+
+.info-box-tr td {
+    border-top: var(--border-colors);
+    border-bottom: var(--border-colors);
+    border-right: var(--border-colors);
+}
+
+.info-box-tr td:first-child {
+    border: var(--border-colors);
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.info-box-tr td:last-child {
+    border-top: var(--border-colors);
+    border-bottom: var(--border-colors);
+    border-right: var(--border-colors);
+    border-radius: 0 0.5rem 0.5rem 0;
 }

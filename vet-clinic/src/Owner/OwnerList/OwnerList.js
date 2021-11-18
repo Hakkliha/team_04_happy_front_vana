@@ -5,7 +5,7 @@ import OwnerDetail from "../OwnerDetail/OwnerDetail";
 import OwnerForm from "../OwnerForm/OwnerForm";
 import axios from "axios";
 import {Button, Tooltip} from "antd";
-import {CloseOutlined, EditTwoTone, RightCircleTwoTone, SearchOutlined} from '@ant-design/icons';
+import {CloseOutlined, EditFilled, RightCircleFilled, SearchOutlined} from '@ant-design/icons';
 import OwnerEdit from "../OwnerEdit/OwnerEdit";
 
 class OwnerList extends React.Component {
@@ -93,39 +93,46 @@ class OwnerList extends React.Component {
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <OwnerEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
-                            <form onSubmit={this.handleSubmit}>
+                            <form onSubmit={this.handleSubmit} className="search-box">
                                 <input type="text" placeholder="Name" name="name" value={this.state.name}
                                        onChange={this.handleChange}/>
                                 <Tooltip title="search">
-                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}/>
+                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit} className="search-btn"/>
                                 </Tooltip>
                                 <Tooltip title="clear">
-                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList}/>
+                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList} className="search-btn"/>
                                 </Tooltip>
                             </form>
                             <table className="link-table">
                                 <thead>
                                 <tr>
-                                    <td><b>Name</b></td>
-                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <td><b>First Name</b></td>
+                                    <td><b>Last Name</b></td>
+                                    <td><b>Phone</b></td>
+                                    <td>Edit</td>
+                                    <td>Details</td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {this.state.listOfOwners.map(element =>
-                                    <tr key={element.id}>
-                                        <td>
-                                            <Link
-                                                to={`${match.url}/${element.id}`}><RightCircleTwoTone/> {element.firstName} {element.lastName}
-                                            </Link>
-                                        </td>
-                                        <td>
+                                    <tr key={element.id} className="info-box-tr">
+                                        <td>{element.firstName}</td>
+                                        <td>{element.lastName}</td>
+                                        <td>{element.phone ? element.phone : "-"}</td>
+                                        <td className="button-padding">
                                             <Link to={`${match.url}/${element.id}/edit`}
-                                                  className="edit-btn"><EditTwoTone/></Link>
+                                                  className="edit-btn"><EditFilled /></Link>
+                                        </td>
+                                        <td className="button-padding">
+                                            <Link
+                                                to={`${match.url}/${element.id}`} className="go-btn"><RightCircleFilled />
+                                            </Link>
                                         </td>
                                     </tr>
                                 )}
                                 </tbody>
                             </table>
+
 
                         </Route>
                     </Switch>

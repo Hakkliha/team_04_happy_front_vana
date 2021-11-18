@@ -34,6 +34,7 @@ class OwnerDetail extends React.Component {
             .catch(function (response) {
                 return response.data;
             });
+        console.log(resData)
         this.setState({
             id: this.props.match.params.topicId,
             firstName: resData.firstName,
