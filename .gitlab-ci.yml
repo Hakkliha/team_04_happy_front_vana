@@ -51,5 +51,5 @@ deploy:
   script:
     - mkdir -p ~/front-deployment
     - rm -rf ~/front-deployment/*
-    - ll
-#    - cp -r dist/team_04_happy_front/. ~/front-deployment
+    - ls
+    - cp -r dist/team_04_happy_front/. ~/front-deployment
