@@ -36,7 +36,7 @@ docker-build:
   tags:
     - happy
   services:
-    - name: docker:19.03.8-dind
+    - name: docker:20.10.11
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
