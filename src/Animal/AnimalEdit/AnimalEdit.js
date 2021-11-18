@@ -33,7 +33,7 @@ class AnimalEdit extends React.Component {
         this.setState({gender: gender})
         let reponse = await axios({
             method: 'put',
-            url: `http://localhost:8080/animals/`,
+            url: `/api/animals/`,
             data: this.state
         })
             .then(function (response) {
@@ -52,7 +52,7 @@ class AnimalEdit extends React.Component {
         if (this.state.id !== this.props.match.params.topicId){
             let resData = await axios({
                 method: 'get',
-                url: `http://localhost:8080/animals/${this.props.match.params.topicId}`
+                url: `/api/animals/${this.props.match.params.topicId}`
             })
                 .then(function (response) {
                     return response.data;
@@ -77,7 +77,7 @@ class AnimalEdit extends React.Component {
 
         let res = await axios({
             method: 'delete',
-            url: `http://localhost:8080/animals/${this.props.match.params.topicId}`
+            url: `/api/animals/${this.props.match.params.topicId}`
         })
             .then(function (response) {
                 console.log(response)

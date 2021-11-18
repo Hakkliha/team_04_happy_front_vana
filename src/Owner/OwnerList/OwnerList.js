@@ -26,7 +26,7 @@ class OwnerList extends React.Component {
         this.setState({name: ''})
         let resData = await axios({
             method: 'get',
-            url: 'http://localhost:8080/owners'
+            url: '/api/owners'
         })
             .then(function (response) {
                 return response.data;
@@ -42,7 +42,7 @@ class OwnerList extends React.Component {
     async componentDidMount() {
         let resData = await axios({
             method: 'get',
-            url: 'http://localhost:8080/owners'
+            url: '/api/owners'
         })
             .then(function (response) {
                 return response.data;
@@ -63,7 +63,7 @@ class OwnerList extends React.Component {
         event.preventDefault();
         let resData = await axios({
             method: 'get',
-            url: `http://localhost:8080/owners/search?fullName=${this.state.name}`
+            url: `/api/owners?fullName=${this.state.name}`
         })
             .then(function (response) {
                 console.log(response)

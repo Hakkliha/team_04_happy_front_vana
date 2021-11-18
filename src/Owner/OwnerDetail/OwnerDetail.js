@@ -26,7 +26,7 @@ class OwnerDetail extends React.Component {
     async componentDidMount() {
         let resData = await axios({
             method: 'get',
-            url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+            url: `/api/owners/${this.props.match.params.topicId}`
         })
             .then(function (response) {
                 return response.data;
@@ -56,7 +56,7 @@ class OwnerDetail extends React.Component {
         if (this.state.id !== this.props.match.params.topicId) {
             let resData = await axios({
                 method: 'get',
-                url: `http://localhost:8080/owners/${this.props.match.params.topicId}`
+                url: `/api/owners/${this.props.match.params.topicId}`
             })
                 .then(function (response) {
                     return response.data;

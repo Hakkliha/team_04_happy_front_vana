@@ -1,18 +1,18 @@
 stages:
   - build
-#  - test
+  - test
 #  - docker-build
   - deploy
 
-#test:
-#  stage: test
-#  image: node
-#  tags:
-#    - happy
-#  script:
-#    - echo "Testing App"
-#    - CI=true npm test
-#    - echo "Test successfully!"
+test:
+  stage: test
+  image: node
+  tags:
+    - happy
+  script:
+    - echo "Testing App"
+    - CI=true npm test
+    - echo "Test successfully!"
 
 build:
   stage: build

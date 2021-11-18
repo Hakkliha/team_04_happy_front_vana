@@ -26,7 +26,7 @@ class AnimalList extends React.Component {
         this.setState({name: ''})
         let resData = await axios({
             method: 'get',
-            url: 'http://localhost:8080/animals'
+            url: '/api/animals'
         })
             .then(function (response) {
                 return response.data;
@@ -42,7 +42,7 @@ class AnimalList extends React.Component {
     async componentDidMount() {
         let resData = await axios({
             method: 'get',
-            url: 'http://localhost:8080/animals'
+            url: '/api/animals'
         })
             .then(function (response) {
                 return response.data;
@@ -63,7 +63,7 @@ class AnimalList extends React.Component {
         event.preventDefault();
         let resData = await axios({
             method: 'get',
-            url: `http://localhost:8080/animals/search?name=${this.state.name}`
+            url: `/api/animals?name=${this.state.name}`
         })
             .then(function (response) {
                 console.log(response)
