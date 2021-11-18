@@ -1,6 +1,6 @@
 stages:
   - build
-  - docker-build
+#  - docker-build
   - deploy
 
 build:
@@ -19,19 +19,19 @@ build:
       - build
       - node_modules/
 
-docker-build:
-  stage: docker-build
-  image: docker:latest
-  tags:
-    - happy
-  services:
-    - name: docker:20.10.11
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-    - echo "Registry image:" $CI_REGISTRY_IMAGE
+#docker-build:
+#  stage: docker-build
+#  image: docker:latest
+#  tags:
+#    - happy
+#  services:
+#    - name: docker:20.10.11
+#  before_script:
+#    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#  script:
+#    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+#    - docker push "$CI_REGISTRY_IMAGE"
+#    - echo "Registry image:" $CI_REGISTRY_IMAGE
 
 deploy:
   stage: deploy
