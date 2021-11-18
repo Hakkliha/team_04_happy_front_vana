@@ -20,7 +20,7 @@ build:
   tags:
     - happy
   script:
-    - echo "Start building App!"
+    - echo "Start building App"
     - npm install
     - npm run build
     - echo "Build successfully!"
