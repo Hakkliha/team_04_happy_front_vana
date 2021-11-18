@@ -11,7 +11,7 @@ test:
     - happy
   script:
     - echo "Testing App"
-    - CI=true yarn test
+    - CI=true npm test
     - echo "Test successfully!"
 
 build:
@@ -21,8 +21,8 @@ build:
     - happy
   script:
     - echo "Start building App!"
-    - yarn install
-    - yarn build
+    - npm install
+    - npm build
     - echo "Build successfully!"
   artifacts:
     expire_in: 1 hour
@@ -51,4 +51,4 @@ deploy:
   script:
     - mkdir -p ~/front-deployment
     - rm -rf ~/front-deployment/*
-    - cp -r dist/build/. ~/front-deployment
+    - cp -r dist/team_04_happy_front/. ~/front-deployment
