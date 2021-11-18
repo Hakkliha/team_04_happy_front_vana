@@ -1,27 +1,50 @@
 stages:
   - build
+  - test
+  - docker-build
   - deploy
 
-build vet-clinic:
+build:
   stage: build
-  image: node:12-alpine
-  cache:
-    paths:
-      - node_modules
-  artifacts:
-    paths:
-      - dist
-  tags:
-    - happy
+  image: node
   script:
+    - echo "Start building App"
     - npm install
-    - npm run build
+    - npm build
+    - echo "Build successfully!"
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - build
+      - node_modules/
 
-deploy vet-clinic:
-  stage: deploy
-  tags:
-    - happy
+test:
+  stage: test
+  image: node
   script:
-    - mkdir -p ~/front-deployment
-    - rm -rf ~/front-deployment/*
-    - cp -r dist/angular-heroes/. ~/front-deployment
+    - echo "Testing App"
+    - CI=true npm test
+    - echo "Test successfully!"
+
+docker-build:
+  stage: docker-build
+  image: docker:latest
+  services:
+    - name: docker:19.03.8-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+    - echo "Registry image:" $CI_REGISTRY_IMAGE
+
+deploy:
+  stage: deploy
+  image: kroniak/ssh-client
+  before_script:
+    - echo "deploying app"
+  script:
+    - chmod 400 $SSH_PRIVATE_KEY
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker pull registry.gitlab.com/alfredomartinezzz/budgefy"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker stop budgefycontainer || true && docker rm budgefycontainer || true"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY root@$PROD_SERVER_IP "docker run -p 3001:80 -d --name budgefycontainer registry.gitlab.com/alfredomartinezzz/budgefy"
