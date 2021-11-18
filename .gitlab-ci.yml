@@ -20,7 +20,7 @@ build vet-clinic:
 deploy vet-clinic:
   stage: deploy
   tags:
-    - vet-clinic
+    - happy
   script:
     - mkdir -p ~/front-deployment
     - rm -rf ~/front-deployment/*
