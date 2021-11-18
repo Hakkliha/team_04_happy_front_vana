@@ -14,7 +14,9 @@ build vet-clinic:
   tags:
     - happy
   script:
-    - yarn run build
+    - yarn install
+    - npm install
+    - npm run build
 
 deploy vet-clinic:
   stage: deploy
