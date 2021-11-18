@@ -31,7 +31,7 @@ class OwnerForm extends React.Component {
         this.setState({fullName: this.state.firstName + " " + this.state.lastName})
         let reponse = await axios({
             method: 'post',
-            url: '/api/owners',
+            url: '/owners',
             data: this.state
         })
             .then(function (response) {
