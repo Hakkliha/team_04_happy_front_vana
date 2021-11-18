@@ -19,16 +19,6 @@ build:
       - build
       - node_modules/
 
-test:
-  stage: test
-  image: node
-  tags:
-    - happy
-  script:
-    - echo "Testing App"
-    - CI=true npm test
-    - echo "Test successfully!"
-
 docker-build:
   stage: docker-build
   image: docker:latest
