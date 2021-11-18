@@ -9,7 +9,7 @@ build:
   tags:
     - happy
   script:
-    - echo "Start building App"
+    - echo "Start building App!"
     - npm install
     - npm build
     - echo "Build successfully!"
