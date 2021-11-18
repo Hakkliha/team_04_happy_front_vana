@@ -5,7 +5,8 @@ stages:
 build vet-clinic:
   stage: build
   image: node:12-alpine
-  cache:
+  cache:start
+
     paths:
       - node_modules
   artifacts:
