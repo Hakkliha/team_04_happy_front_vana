@@ -28,7 +28,7 @@ class AnimalDetail extends React.Component {
     async componentDidMount() {
         let resData = await axios({
             method: 'get',
-            url: `/animals/${this.props.match.params.topicId}`
+            url: `/api/animals/${this.props.match.params.topicId}`
         })
             .then(function (response) {
                 return response.data;
@@ -53,7 +53,7 @@ class AnimalDetail extends React.Component {
         if (this.state.id !== this.props.match.params.topicId) {
             let resData = await axios({
                 method: 'get',
-                url: `/animals/${this.props.match.params.topicId}`
+                url: `/api/animals/${this.props.match.params.topicId}`
             })
                 .then(function (response) {
                     return response.data;

@@ -28,7 +28,7 @@ class AnimalForm extends React.Component {
         this.setState({gender: gender})
         let reponse = await axios({
             method: 'post',
-            url: '/animals',
+            url: '/api/animals',
             data: this.state
         })
             .then(function (response) {

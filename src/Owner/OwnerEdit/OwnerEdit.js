@@ -36,7 +36,7 @@ class OwnerEdit extends React.Component {
         this.setState({fullName: this.state.firstName + " " + this.state.lastName})
         let reponse = await axios({
             method: 'put',
-            url: `/owners/`,
+            url: `/api/owners/`,
             data: this.state
         })
             .then(function (response) {
@@ -55,7 +55,7 @@ class OwnerEdit extends React.Component {
         if (this.state.id !== this.props.match.params.topicId) {
             let resData = await axios({
                 method: 'get',
-                url: `/owners/${this.props.match.params.topicId}`
+                url: `/api/owners/${this.props.match.params.topicId}`
             })
                 .then(function (response) {
                     return response.data;
@@ -84,7 +84,7 @@ class OwnerEdit extends React.Component {
 
         let res = await axios({
             method: 'delete',
-            url: `/owners/${this.props.match.params.topicId}`
+            url: `/api/owners/${this.props.match.params.topicId}`
         })
             .then(function (response) {
                 console.log(response)
