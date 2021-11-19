@@ -10,7 +10,7 @@ test:
   tags:
     - happy
   script:
-    - echo "Testing App"
+    - echo "Testing App!"
     - CI=true npm test
     - echo "Test successfully!"
 
