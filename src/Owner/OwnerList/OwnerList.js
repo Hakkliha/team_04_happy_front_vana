@@ -148,7 +148,7 @@ class OwnerList extends React.Component {
                     </Route>
                     <Route path={`${match.path}/:topicId`} render={(props) => <OwnerDetail {...props} />}/>
                     <Route path={match.path}>
-                        <h3 className="notice">Please select an Owner.</h3>
+                        <h3 className="notice">Please select an owner.</h3>
                     </Route>
                 </Switch>
             </div>
