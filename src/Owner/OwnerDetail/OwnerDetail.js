@@ -1,6 +1,6 @@
 import React from "react";
 import "./OwnerDetail.css";
-import axios from "axios";
+import OwnerService from "../../services/owner.service";
 
 class OwnerDetail extends React.Component {
     constructor(props) {
@@ -24,17 +24,8 @@ class OwnerDetail extends React.Component {
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: `/api/owners/${this.props.match.params.topicId}`
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                return response.data;
-            });
-        console.log(resData)
+        let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
+        resData = resData.data
         this.setState({
             id: this.props.match.params.topicId,
             firstName: resData.firstName,
@@ -54,16 +45,8 @@ class OwnerDetail extends React.Component {
 
     async componentDidUpdate() {
         if (this.state.id !== this.props.match.params.topicId) {
-            let resData = await axios({
-                method: 'get',
-                url: `/api/owners/${this.props.match.params.topicId}`
-            })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
+            let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
+            resData = resData.data;
             this.setState({
                 id: this.props.match.params.topicId,
                 firstName: resData.firstName,

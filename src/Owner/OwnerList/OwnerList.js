@@ -3,10 +3,10 @@ import "./OwnerList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import OwnerDetail from "../OwnerDetail/OwnerDetail";
 import OwnerForm from "../OwnerForm/OwnerForm";
-import axios from "axios";
 import {Button, Tooltip} from "antd";
 import {CloseOutlined, EditFilled, RightCircleFilled, SearchOutlined} from '@ant-design/icons';
 import OwnerEdit from "../OwnerEdit/OwnerEdit";
+import OwnerService from "../../services/owner.service";
 
 class OwnerList extends React.Component {
     constructor(props) {
@@ -24,35 +24,13 @@ class OwnerList extends React.Component {
 
     async reloadList() {
         this.setState({name: ''})
-        let resData = await axios({
-            method: 'get',
-            url: '/api/owners'
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
-
-        this.setState({listOfOwners: resData});
+        let resData = await OwnerService.getList()
+        this.setState({listOfOwners: resData.data});
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: '/api/owners'
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
-
-        this.setState({listOfOwners: resData});
+        let resData = await OwnerService.getList();
+        this.setState({listOfOwners: resData.data});
     }
 
     handleChange(event) {
@@ -61,20 +39,9 @@ class OwnerList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        let resData = await axios({
-            method: 'get',
-            url: `/api/owners?fullName=${this.state.name}`
-        })
-            .then(function (response) {
-                console.log(response)
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
+        let resData = await OwnerService.getListSearch(this.state.name);
 
-        this.setState({listOfOwners: resData});
+        this.setState({listOfOwners: resData.data});
     }
 
     render() {
@@ -97,42 +64,46 @@ class OwnerList extends React.Component {
                                 <input type="text" placeholder="Name" name="name" value={this.state.name}
                                        onChange={this.handleChange}/>
                                 <Tooltip title="search">
-                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit} className="search-btn"/>
+                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}
+                                            className="search-btn"/>
                                 </Tooltip>
                                 <Tooltip title="clear">
-                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList} className="search-btn"/>
+                                    <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList}
+                                            className="search-btn"/>
                                 </Tooltip>
                             </form>
-                            <table className="link-table">
-                                <thead>
-                                <tr>
-                                    <td><b>First Name</b></td>
-                                    <td><b>Last Name</b></td>
-                                    <td><b>Phone</b></td>
-                                    <td>Edit</td>
-                                    <td>Details</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.state.listOfOwners.map(element =>
-                                    <tr key={element.id} className="info-box-tr">
-                                        <td>{element.firstName}</td>
-                                        <td>{element.lastName}</td>
-                                        <td>{element.phone ? element.phone : "-"}</td>
-                                        <td className="button-padding">
-                                            <Link to={`${match.url}/${element.id}/edit`}
-                                                  className="edit-btn"><EditFilled /></Link>
-                                        </td>
-                                        <td className="button-padding">
-                                            <Link
-                                                to={`${match.url}/${element.id}`} className="go-btn"><RightCircleFilled />
-                                            </Link>
-                                        </td>
+                            <div className="about-content list-content">
+                                <table className="link-table">
+                                    <thead>
+                                    <tr>
+                                        <td><b>First Name</b></td>
+                                        <td><b>Last Name</b></td>
+                                        <td><b>Phone</b></td>
+                                        <td>Edit</td>
+                                        <td>Details</td>
                                     </tr>
-                                )}
-                                </tbody>
-                            </table>
-
+                                    </thead>
+                                    <tbody>
+                                    {this.state.listOfOwners.map(element =>
+                                        <tr key={element.id} className="info-box-tr">
+                                            <td>{element.firstName}</td>
+                                            <td>{element.lastName}</td>
+                                            <td>{element.phone ? element.phone : "-"}</td>
+                                            <td className="button-padding">
+                                                <Link to={`${match.url}/${element.id}/edit`}
+                                                      className="edit-btn"><EditFilled/></Link>
+                                            </td>
+                                            <td className="button-padding">
+                                                <Link
+                                                    to={`${match.url}/${element.id}`}
+                                                    className="go-btn"><RightCircleFilled/>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>
+                            </div>
 
                         </Route>
                     </Switch>

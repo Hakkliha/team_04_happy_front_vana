@@ -3,7 +3,6 @@ import "./AppointmentEdit.css";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
 
-
 class AppointmentEdit extends React.Component {
     constructor(props) {
         super(props);

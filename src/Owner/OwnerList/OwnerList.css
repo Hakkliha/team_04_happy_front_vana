@@ -20,6 +20,7 @@
 .list-view {
     display: flex;
     flex-flow: row nowrap;
+    overflow-y: hidden;
 }
 
 .search-box input {
@@ -63,7 +64,7 @@
     overflow-y: scroll;
     width: 95%;
     min-width: 20rem;
-    border-collapse:separate;
+    border-collapse: separate;
     border-spacing: 0 0.5rem;
 }
 
@@ -96,4 +97,8 @@
     border-bottom: var(--border-colors);
     border-right: var(--border-colors);
     border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.list-content {
+    height: 87%;
 }

@@ -1,14 +1,16 @@
 import React from "react";
 import "./Login.css";
-import axios from "axios";
+import {Redirect, Route} from "react-router-dom";
+import AuthService from "../../services/auth.service";
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             errors: '',
-            email: '',
-            password: ''
+            username: '',
+            password: '',
+            login: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,35 +22,26 @@ class Login extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        const token = Buffer.from(`${this.state.email}:${this.state.password}`, 'utf8').toString('base64')
-        let response = await axios.post('/api/login', {}, {
-                headers: {'Authorization': `Basic ${token}`}
-            }
-        )
-            .then(function (response) {
-                console.log(response)
-                return true;
-            })
-            .catch(function (response) {
-
-                console.log(response)
-                return false;
-            });
-        console.log(token)
-        alert(response)
-        if (!response) {
-            this.setState({errors: response, email: '', password: ''})
+        let response = await AuthService.login(this.state.username, this.state.password);
+        if (response.token) {
+            this.setState({login: true})
+            this.props.navBarChange();
         }
     }
+
 
     render() {
         return (
             <div className="login-form">
+
                 <form onSubmit={this.handleSubmit} method="post">
-                    <h1>Login</h1>
-                    <label> <b>Email</b>
-                        <input type="email" name="email" value={this.state.email}
-                               onChange={this.handleChange} placeholder="info@email.com"/>
+                    <Route path="/" render={() => (
+                        this.state.login ? (
+                            <Redirect to="/owners"/>
+                        ) : (<h1>Login</h1>))}/>
+                    <label> <b>Username</b>
+                        <input type="text" name="username" value={this.state.username}
+                               onChange={this.handleChange} placeholder="Username"/>
                     </label>
                     <label> <b>Password</b>
                         <input type="password" name="password" value={this.state.password}

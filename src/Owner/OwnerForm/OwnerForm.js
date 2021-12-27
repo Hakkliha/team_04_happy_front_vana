@@ -1,6 +1,6 @@
 import React from "react";
 import "./OwnerForm.css";
-import axios from "axios";
+import OwnerService from "../../services/owner.service";
 
 class OwnerForm extends React.Component {
     constructor(props) {
@@ -29,21 +29,8 @@ class OwnerForm extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        this.setState({fullName: this.state.firstName + " " + this.state.lastName})
-        let reponse = await axios({
-            method: 'post',
-            url: '/api/owners',
-            data: this.state
-        })
-            .then(function (response) {
-                console.log(response)
-                return response.status + ": User Created";
-            })
-            .catch(function (response) {
-                console.log(response)
-                return response.status + ": Creation failed";
-            });
-        alert(reponse)
+        let response = await OwnerService.postOwner(this.state);
+        alert(response.status)
 
     }
 

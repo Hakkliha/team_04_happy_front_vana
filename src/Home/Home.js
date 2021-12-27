@@ -1,7 +1,7 @@
 import React from "react";
 import "./Home.css";
 import Andmeloom from "../resources/ANDMELOOM.png";
-import Link from "react-router-dom/es/Link";
+import {Link} from "react-router-dom";
 
 class Home extends React.Component {
     render() {

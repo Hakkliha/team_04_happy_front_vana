@@ -1,7 +1,7 @@
 import React from "react";
 import "./OwnerEdit.css";
-import axios from "axios";
 import {Redirect} from "react-router-dom";
+import OwnerService from "../../services/owner.service";
 
 
 class OwnerEdit extends React.Component {
@@ -33,36 +33,14 @@ class OwnerEdit extends React.Component {
     }
 
     async handleSubmit() {
-        this.setState({fullName: this.state.firstName + " " + this.state.lastName})
-        let reponse = await axios({
-            method: 'put',
-            url: `/api/owners/`,
-            data: this.state
-        })
-            .then(function (response) {
-                console.log(response)
-                return response.status + ": Update Successful";
-            })
-            .catch(function (response) {
-                console.log(response)
-                return response.status + ": Update failed";
-            });
-        alert(reponse)
-
+        let response = await OwnerService.putOwner(this.state);
+        alert(response)
     }
 
     async componentDidMount() {
         if (this.state.id !== this.props.match.params.topicId) {
-            let resData = await axios({
-                method: 'get',
-                url: `/api/owners/${this.props.match.params.topicId}`
-            })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
+            let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
+            resData = resData.data;
             this.setState({
                 id: this.props.match.params.topicId,
                 firstName: resData.firstName,
@@ -81,20 +59,9 @@ class OwnerEdit extends React.Component {
     }
 
     async handleDelete() {
-
-        let res = await axios({
-            method: 'delete',
-            url: `/api/owners/${this.props.match.params.topicId}`
-        })
-            .then(function (response) {
-                console.log(response)
-                return true
-            })
-            .catch(function (response) {
-                console.log(response)
-                return false
-            });
-        if (res) {
+        let res = await OwnerService.deleteOwner(this.props.match.params.topicId);
+        console.log(res.status);
+        if (res.status === 200 || res.status === 204) {
             this.props.listReload()
             this.setState({deleted: true})
         }
@@ -114,7 +81,7 @@ class OwnerEdit extends React.Component {
                                         First Name
                                     </td>
                                     <td>
-                                        <input type="text" name="firstName" value={this.state.firstName}
+                                        <input type="text" name="firstName" value={this.state.firstName || ''}
                                                onChange={this.handleChange} placeholder="First Name"/>
                                     </td>
                                 </tr>
@@ -123,7 +90,7 @@ class OwnerEdit extends React.Component {
                                         Last Name
                                     </td>
                                     <td>
-                                        <input type="text" name="lastName" value={this.state.lastName}
+                                        <input type="text" name="lastName" value={this.state.lastName || ''}
                                                onChange={this.handleChange} placeholder="Last Name"/>
                                     </td>
                                 </tr>
@@ -132,7 +99,7 @@ class OwnerEdit extends React.Component {
                                         Phone
                                     </td>
                                     <td>
-                                        <input type="text" name="phone" value={this.state.phone}
+                                        <input type="text" name="phone" value={this.state.phone || ''}
                                                onChange={this.handleChange} placeholder="+372 5698 4201"/>
                                     </td>
                                 </tr>
@@ -141,7 +108,7 @@ class OwnerEdit extends React.Component {
                                         E-Mail
                                     </td>
                                     <td>
-                                        <input type="email" name="email" value={this.state.email}
+                                        <input type="email" name="email" value={this.state.email || ''}
                                                onChange={this.handleChange} placeholder="andero@raava.ee"/>
                                     </td>
                                 </tr>
@@ -150,7 +117,7 @@ class OwnerEdit extends React.Component {
                                         Street
                                     </td>
                                     <td>
-                                        <input type="text" name="street" value={this.state.street}
+                                        <input type="text" name="street" value={this.state.street || ''}
                                                onChange={this.handleChange} placeholder="Kuldnoka street"/>
                                     </td>
                                 </tr>
@@ -159,7 +126,7 @@ class OwnerEdit extends React.Component {
                                         House
                                     </td>
                                     <td>
-                                        <input type="text" name="house" value={this.state.house}
+                                        <input type="text" name="house" value={this.state.house || ''}
                                                onChange={this.handleChange} placeholder="4B"/>
                                     </td>
                                 </tr>
@@ -168,7 +135,7 @@ class OwnerEdit extends React.Component {
                                         Apartment
                                     </td>
                                     <td>
-                                        <input type="text" name="apartment" value={this.state.apartment}
+                                        <input type="text" name="apartment" value={this.state.apartment || ''}
                                                onChange={this.handleChange} placeholder="103"/>
                                     </td>
                                 </tr>
@@ -177,7 +144,7 @@ class OwnerEdit extends React.Component {
                                         City
                                     </td>
                                     <td>
-                                        <input type="text" name="city" value={this.state.city}
+                                        <input type="text" name="city" value={this.state.city || ''}
                                                onChange={this.handleChange} placeholder="Tallinn"/>
                                     </td>
                                 </tr>
@@ -186,7 +153,7 @@ class OwnerEdit extends React.Component {
                                         ZIP Code
                                     </td>
                                     <td>
-                                        <input type="text" name="postalIndex" value={this.state.postalIndex}
+                                        <input type="text" name="postalIndex" value={this.state.postalIndex || ''}
                                                onChange={this.handleChange} placeholder="19113"/>
                                     </td>
                                 </tr>
@@ -195,7 +162,7 @@ class OwnerEdit extends React.Component {
                                         County
                                     </td>
                                     <td>
-                                        <input type="text" name="county" value={this.state.county}
+                                        <input type="text" name="county" value={this.state.county || ''}
                                                onChange={this.handleChange} placeholder="Harjumaa"/>
                                     </td>
                                 </tr>
@@ -204,7 +171,7 @@ class OwnerEdit extends React.Component {
                                         Country
                                     </td>
                                     <td>
-                                        <input type="text" name="country" value={this.state.country}
+                                        <input type="text" name="country" value={this.state.country || ''}
                                                onChange={this.handleChange} placeholder="Estonia"/>
                                     </td>
                                 </tr>
