@@ -17,12 +17,18 @@ ul {
 }
 
 #nav-logo {
-    width: 4rem;
-    height: 4rem;
+    width: 6rem;
+    height: 6rem;
 }
 
 #nav-logo-link {
     border: none;
+}
+
+#usr-logo {
+    width: 3rem;
+    background: lightblue;
+    border-radius: 50%;
 }
 
 #main-container {

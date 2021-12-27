@@ -27,7 +27,8 @@ class OwnerForm extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    async handleSubmit() {
+    async handleSubmit(e) {
+        e.preventDefault()
         this.setState({fullName: this.state.firstName + " " + this.state.lastName})
         let reponse = await axios({
             method: 'post',
@@ -48,7 +49,7 @@ class OwnerForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit} className="input-form">
+            <form onSubmit={this.handleSubmit} className="input-form" method="post">
                 <table>
                     <tbody>
                     <tr>

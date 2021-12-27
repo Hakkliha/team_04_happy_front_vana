@@ -1,0 +1,32 @@
+.login-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../resources/draws-pattern-svgrepo-com.svg");
+    background-size: 30rem;
+}
+
+.login-form form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 2px solid #1890FF;
+    background: rgba(255, 255, 255, 1);
+}
+
+.login-form form input {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.login-form form label {
+    display: flex;
+    flex-flow: column nowrap;
+}
+

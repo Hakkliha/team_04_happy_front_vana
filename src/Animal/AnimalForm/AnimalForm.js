@@ -23,7 +23,8 @@ class AnimalForm extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    async handleSubmit() {
+    async handleSubmit(e) {
+        e.preventDefault()
         let gender = await this.state.gender.toUpperCase()
         this.setState({gender: gender})
         let reponse = await axios({
@@ -44,7 +45,7 @@ class AnimalForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit} className="input-form">
+            <form onSubmit={this.handleSubmit} className="input-form" method="post">
                 <table>
                     <tbody>
                     <tr>

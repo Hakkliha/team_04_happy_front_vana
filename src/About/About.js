@@ -8,6 +8,7 @@ class About extends React.Component {
     render() {
         return (
             <div className="main-content-about">
+                <div className="about-content">
                 <h1>About</h1>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras enim eros, dictum ut dapibus sit amet,
@@ -53,6 +54,7 @@ class About extends React.Component {
                     malesuada, ornare turpis ut, gravida mauris.
 
                 </p>
+                </div>
             </div>
         )
     }

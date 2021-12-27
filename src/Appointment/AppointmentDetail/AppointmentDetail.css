@@ -1,0 +1,31 @@
+.data-section {
+    flex-grow: 1;
+}
+
+.data-section .table {
+    text-align: center;
+    width: 100%;
+}
+
+.data-section .table thead th {
+    font-size: 1.5rem;
+}
+
+.data-section .table tr > * {
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.data-section .table tbody tr:first-child td {
+    border-top: 1px solid lightgray;
+}
+.data-section .table tbody tr td {
+    border-bottom: 1px solid lightgray;
+}
+.data-section .table tbody tr td:first-child {
+    border-right: 1px solid lightgray;
+}
+
+.data-section .table tr td:first-child {
+    width: 30%;
+}

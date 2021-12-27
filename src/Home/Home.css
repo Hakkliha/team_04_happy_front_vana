@@ -1,15 +1,29 @@
 .main-content-home {
     width: 100%;
-    text-align: center;
-    padding: 1rem 0 0 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../resources/Taust.svg");
+    background-size: cover;
+}
+
+.home-content-box {
     display: flex;
     flex-flow: column nowrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
-.home-wallpaper {
-    width: 100%;
-    object-fit: cover;
-    height: 30rem;
+#homepage-title {
+    width: 40rem;
+}
+
+#homepage-login {
+    margin-top: 5rem;
+    font-size: 2rem;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 10rem;
+    background: #000c17;
 }

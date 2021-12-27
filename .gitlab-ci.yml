@@ -43,6 +43,7 @@ build:
 #    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
 #    - docker push "$CI_REGISTRY_IMAGE"
 #    - echo "Registry image:" $CI_REGISTRY_IMAGE
+# LISA SUDO ÕIGUSE KÕIGILE?!
 
 deploy:
   stage: deploy
