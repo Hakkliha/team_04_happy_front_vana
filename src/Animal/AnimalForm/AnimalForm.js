@@ -29,6 +29,7 @@ class AnimalForm extends React.Component {
         } else {
             this.setState({[event.target.name]: event.target.value});
         }
+        console.log(JSON.parse(this.state))
     }
 
     async handleSubmit(e) {
@@ -38,7 +39,15 @@ class AnimalForm extends React.Component {
         let reponse = await axios({
             url: "http://localhost:8080/api/animals",
             method: "post",
-            data: this.state,
+            data: {
+                name: this.state.name,
+                dateOfBirth: this.state.dateOfBirth,
+                species: this.state.species,
+                breed: this.state.breed,
+                chipNr: this.state.chipNr,
+                gender: this.state.gender,
+                weight: this.state.weight
+            },
             headers: {
                 'Authorization': "Bearer " + token
             }

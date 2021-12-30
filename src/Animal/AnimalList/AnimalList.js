@@ -1,12 +1,13 @@
 import React from "react";
 import "./AnimalList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
-import AnimalDetail from "../AnimalDetail/AnimalDetail";
 import AnimalForm from "../AnimalForm/AnimalForm";
 import {Button, Tooltip} from "antd";
 import {CloseOutlined, EditTwoTone, RightCircleTwoTone, SearchOutlined} from '@ant-design/icons';
 import AnimalEdit from "../AnimalEdit/AnimalEdit";
 import AnimalService from "../../services/animal.service";
+import AnimalDetail from "../AnimalDetail/AnimalDetail";
+import AnimalOwnerAdd from "../AnimalOwnerAdd/AnimalOwnerAdd";
 
 class AnimalList extends React.Component {
     constructor(props) {
@@ -59,6 +60,8 @@ class AnimalList extends React.Component {
                     <Switch>
                         <Route path={`${match.path}/create`}
                                render={(props) => <AnimalForm {...props} listReload={this.reloadList}/>}/>
+                        <Route path={`${match.path}/:topicId/owner_add`}
+                               render={(props) => <AnimalOwnerAdd {...props} listReload={this.reloadList}/>}/>
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <AnimalEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
@@ -90,6 +93,9 @@ class AnimalList extends React.Component {
                                         <td>
                                             <Link to={`${match.url}/${element.id}/edit`}
                                                   className="edit-btn"><EditTwoTone/></Link>
+                                        </td>
+                                        <td>
+                                            <Link to={`${match.url}/${element.id}/owner_add`}> Add Owner</Link>
                                         </td>
                                     </tr>
                                 )}

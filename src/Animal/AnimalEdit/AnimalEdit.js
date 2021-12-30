@@ -50,6 +50,7 @@ class AnimalEdit extends React.Component {
         })
         //let response = await OwnerService.putOwner(this.state);
         this.setState(response.data)
+        this.props.listReload()
         this.setState({updated: true})
     }
 
