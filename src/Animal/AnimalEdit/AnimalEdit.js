@@ -18,6 +18,7 @@ class AnimalEdit extends React.Component {
             chipNr: '',
             gender: '',
             weight: '',
+            user: {},
             deleted: false,
             updated: false
         };
@@ -70,7 +71,8 @@ class AnimalEdit extends React.Component {
                 breed: resData.breed,
                 chipNr: resData.chipNr,
                 gender: resData.gender,
-                weight: resData.weight
+                weight: resData.weight,
+                user: resData.user
             })
         }
     }

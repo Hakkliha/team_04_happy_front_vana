@@ -60,9 +60,6 @@ class App extends React.Component {
                                                         <Link to="/appointments"><b>Appointments</b></Link>
                                                     </li>
                                                     <li>
-                                                        <Link to="/about"><b>About</b></Link>
-                                                    </li>
-                                                    <li>
                                                         <p onClick={this.handleLogout}><LogoutOutlined/> <b>Logout</b>
                                                         </p>
                                                     </li>

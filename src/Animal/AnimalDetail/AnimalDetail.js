@@ -1,6 +1,7 @@
 import React from "react";
 import "./AnimalDetail.css";
 import AnimalService from "../../services/animal.service";
+import {Link} from "react-router-dom";
 
 class AnimalDetail extends React.Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class AnimalDetail extends React.Component {
             breed: '',
             chipNr: '',
             gender: '',
-            weight: ''
+            weight: '',
+            user: {}
         };
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -39,7 +41,8 @@ class AnimalDetail extends React.Component {
             breed: resData.breed,
             chipNr: resData.chipNr,
             gender: resData.gender,
-            weight: resData.weight
+            weight: resData.weight,
+            user: resData.user
         })
     }
 
@@ -56,7 +59,8 @@ class AnimalDetail extends React.Component {
                 breed: resData.breed,
                 chipNr: resData.chipNr,
                 gender: resData.gender,
-                weight: resData.weight
+                weight: resData.weight,
+                user: resData.user
             })
         }
     }
@@ -98,6 +102,12 @@ class AnimalDetail extends React.Component {
                     <tr>
                         <td>Weight</td>
                         <td>{this.state.weight} g</td>
+                    </tr>
+                    <tr>
+                        <td>User</td>
+                        <td>{this.state.user ? <Link
+                            to={`/owners/${this.state.user.id}`}>{this.state.user.firstName} {this.state.user.lastName}</Link> : "-"}
+                        </td>
                     </tr>
                     </tbody>
                 </table>

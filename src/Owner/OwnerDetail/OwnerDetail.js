@@ -1,6 +1,8 @@
 import React from "react";
 import "./OwnerDetail.css";
 import OwnerService from "../../services/owner.service";
+import AnimalService from "../../services/animal.service";
+import {Link} from "react-router-dom";
 
 class OwnerDetail extends React.Component {
     constructor(props) {
@@ -18,7 +20,8 @@ class OwnerDetail extends React.Component {
             city: '',
             postalIndex: '',
             county: '',
-            country: ''
+            country: '',
+            animals: []
         };
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -26,6 +29,8 @@ class OwnerDetail extends React.Component {
 
     async componentDidMount() {
         let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
+        let animals = await AnimalService.getAnimalsByUser(this.props.match.params.topicId);
+        animals = animals.data
         resData = resData.data
         this.setState({
             id: this.props.match.params.topicId,
@@ -40,7 +45,8 @@ class OwnerDetail extends React.Component {
             city: resData.city,
             postalIndex: resData.postalIndex,
             county: resData.county,
-            country: resData.country
+            country: resData.country,
+            animals: animals
         })
     }
 
@@ -48,6 +54,8 @@ class OwnerDetail extends React.Component {
     async componentDidUpdate() {
         if (this.state.id !== this.props.match.params.topicId || this.props.location.state?.shouldUpdate) {
             let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
+            let animals = await AnimalService.getAnimalsByUser(this.props.match.params.topicId);
+            animals = animals.data
             resData = resData.data;
             this.setState({
                 id: this.props.match.params.topicId,
@@ -62,7 +70,8 @@ class OwnerDetail extends React.Component {
                 city: resData.city,
                 postalIndex: resData.postalIndex,
                 county: resData.county,
-                country: resData.country
+                country: resData.country,
+                animals: animals
             })
         }
     }
@@ -125,6 +134,15 @@ class OwnerDetail extends React.Component {
                         <td>Country</td>
                         <td>{this.state.country}</td>
                     </tr>
+                    <tr>
+                        <td colSpan={2}>Pets</td>
+                    </tr>
+                    {this.state.animals.map((element, index) => {
+                        return (<tr key={element.id}>
+                            <td>{index}</td>
+                            <td><Link to={`/animals/${element.id}`}>{element.name}</Link></td>
+                        </tr>)
+                    })}
                     </tbody>
                 </table>
             </div>

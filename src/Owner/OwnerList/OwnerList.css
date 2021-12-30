@@ -1,5 +1,6 @@
 .main-content {
     width: 93%;
+    overflow-x: hidden;
 }
 
 .title-button {

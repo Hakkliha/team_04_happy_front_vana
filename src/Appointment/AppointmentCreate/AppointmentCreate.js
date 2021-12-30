@@ -1,41 +1,72 @@
 import React from "react";
 import "./AppointmentCreate.css";
+import AnimalService from "../../services/animal.service";
+import tokenService from "../../services/token.service";
+import TokenService from "../../services/token.service";
 import axios from "axios";
+import {Redirect} from "react-router-dom";
 
 class AppointmentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            animal: '',
-            date: ''
+            animal: {},
+            user: {},
+            appointmentDate: '',
+            listOfAnimals: [],
+            redirect: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+
+    async componentDidMount() {
+        let role = tokenService.getUserRole();
+        let animals;
+        if (role === "ROLE_ADMIN") {
+            animals = await AnimalService.getList();
+        } else {
+            animals = await AnimalService.getAnimalsByUser(JSON.parse(localStorage.getItem('user')).id);
+        }
+        animals = animals.data
+        this.setState({
+            listOfAnimals: animals
+        })
+        console.log(this.state)
+    }
+
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === 'animal') {
+            this.setState({[event.target.name]: {id: event.target.value}});
+        } else {
+            this.setState({[event.target.name]: event.target.value + ":00"});
+        }
     }
 
     async handleSubmit(e) {
         e.preventDefault()
+        const token = TokenService.getLocalAccessToken();
+        const user = (await AnimalService.getAnimalDetail(this.state.animal.id)).data.user;
+        alert(this.state.appointmentDate)
         let reponse = await axios({
-            method: 'post',
-            url: '/api/appointments',
-            data: this.state
+            url: `http://localhost:8080/api/appointments`,
+            method: "post",
+            data: {
+                animal: this.state.animal,
+                user: user,
+                appointmentDate: this.state.appointmentDate
+            },
+            headers: {
+                'Authorization': "Bearer " + token
+            }
         })
-            .then(function (response) {
-                console.log(response)
-                return response.status + ": Appointment Created";
-            })
-            .catch(function (response) {
-                console.log(response)
-                return response.status + ": Creation failed";
-            });
-        console.log(JSON.stringify(this.state))
-        alert(reponse)
-
+        console.log(JSON.stringify(reponse))
+        if (reponse.status === 201) {
+            this.props.listReload()
+            this.setState({redirect: true})
+        }
     }
 
     render() {
@@ -48,10 +79,12 @@ class AppointmentForm extends React.Component {
                             Animal
                         </td>
                         <td>
-                            <select name="animal" value={this.state.animal}
+                            <select name="animal" value={this.state.animal.id || ''}
                                     onChange={this.handleChange} placeholder="Animal">
-                                <option>xd</option>
-                                <option>xdbong</option>
+                                {this.state.listOfAnimals.map(element => {
+                                    return <option key={element.id}
+                                                   value={element.id}>{element.species} {element.breed} {element.name}</option>
+                                })}
                             </select>
                         </td>
                     </tr>
@@ -60,8 +93,9 @@ class AppointmentForm extends React.Component {
                             Date
                         </td>
                         <td>
-                            <input type="datetime-local" name="date" value={this.state.date} onChange={this.handleChange}
-                                   placeholder="12/12/2021"/>
+                            <input type="datetime-local" name="appointmentDate" value={this.state.appointmentDate || ''}
+                                   onChange={this.handleChange}
+                                   placeholder="2021-10-08T20:00"/>
                         </td>
                     </tr>
                     </tbody>
@@ -71,7 +105,8 @@ class AppointmentForm extends React.Component {
 
                         </td>
                         <td>
-                            <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
+                            {this.state.redirect ? <Redirect to="/appointments"/> :
+                                <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>}
                         </td>
                     </tr>
                     </tfoot>

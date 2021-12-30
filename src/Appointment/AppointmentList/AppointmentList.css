@@ -39,6 +39,7 @@
     width: 60%;
     border-right: 2px solid darkgray;
     padding: 2rem 0 0 2rem;
+    overflow-y: scroll;
 }
 
 .notice {
@@ -63,7 +64,7 @@
     overflow-y: scroll;
     width: 95%;
     min-width: 20rem;
-    border-collapse:separate;
+    border-collapse: separate;
     border-spacing: 0 0.5rem;
 }
 

@@ -5,24 +5,23 @@ class AppointmentService {
         return api.get('/appointments');
     }
 
-    getListSearch(searchParam) {
-        return api.get(`/animals?name=${searchParam}`);
+    getAppointmentsDetail(id) {
+        return api.get(`/appointments/${id}`);
     }
 
-    getAnimalDetail(id) {
-        return api.get(`/animals/${id}`);
+    postAppointments(data, date = undefined) {
+        if (date) {
+            return api.post(`/appointments?appointmentDate=${date}`, {data});
+        }
+        return api.post(`/appointments`, {data});
     }
 
-    postAnimal(data) {
-        return api.post('/animals', {data});
+    putAppointments(data) {
+        return api.put('/appointments', {data});
     }
 
-    putAnimal(data) {
-        return api.put('/animals', {data});
-    }
-
-    deleteAnimal(id) {
-        return api.delete(`/animals/${id}`);
+    deleteAppointments(id) {
+        return api.delete(`/appointments/${id}`);
     }
 }
 

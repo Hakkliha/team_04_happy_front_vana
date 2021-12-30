@@ -13,6 +13,10 @@ class AnimalService {
         return api.get(`/animals/${id}`);
     }
 
+    getAnimalsByUser(id) {
+        return api.get(`/animals/userId?userId=${id}`);
+    }
+
     postAnimal(data) {
         return api.post('/animals', {data});
     }

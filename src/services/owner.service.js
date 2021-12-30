@@ -2,7 +2,7 @@ import api from './api';
 
 class OwnerService {
     getList() {
-        return api.get('/users');
+        return api.get('/users?firstName=&lastName=');
     }
 
     getListSearch(searchParam) {

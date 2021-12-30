@@ -1,84 +1,57 @@
 import React from "react";
 import "./AppointmentDetail.css";
-import axios from "axios";
+import AppointmentService from "../../services/appointment.service";
 
 class AppointmentDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             id: '',
-            firstName: '',
-            lastName: '',
-            phone: '',
-            email: '',
-            street: '',
-            house: '',
-            apartment: '',
-            city: '',
-            postalIndex: '',
-            county: '',
-            country: ''
+            animal: {},
+            user: {},
+            appointmentDate: ''
         };
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: `/api/Appointments/${this.props.match.params.topicId}`
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                return response.data;
-            });
+        let resData = await AppointmentService.getAppointmentsDetail(this.props.match.params.topicId)
+        resData = resData.data
         console.log(resData)
         this.setState({
             id: this.props.match.params.topicId,
-            firstName: resData.firstName,
-            lastName: resData.lastName,
-            phone: resData.phone,
-            email: resData.email,
-            street: resData.street,
-            house: resData.house,
-            apartment: resData.apartment,
-            city: resData.city,
-            postalIndex: resData.postalIndex,
-            county: resData.county,
-            country: resData.country
+            animal: resData.animal,
+            user: resData.user,
+            appointmentDate: resData.appointmentDate
         })
     }
 
 
     async componentDidUpdate() {
         if (this.state.id !== this.props.match.params.topicId) {
-            let resData = await axios({
-                method: 'get',
-                url: `/api/Appointments/${this.props.match.params.topicId}`
-            })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
+            let resData = await AppointmentService.getAppointmentsDetail(this.props.match.params.topicId)
+            resData = resData.data
             this.setState({
                 id: this.props.match.params.topicId,
-                firstName: resData.firstName,
-                lastName: resData.lastName,
-                phone: resData.phone,
-                email: resData.email,
-                street: resData.street,
-                house: resData.house,
-                apartment: resData.apartment,
-                city: resData.city,
-                postalIndex: resData.postalIndex,
-                county: resData.county,
-                country: resData.country
+                animal: resData.animal,
+                user: resData.user,
+                appointmentDate: resData.appointmentDate
             })
         }
+    }
+
+    reformatDateTime(input) {
+        console.log(input)
+        if (input) {
+            const dateTime = input.split('T')
+            const date = dateTime[0].split('-')
+            const time = dateTime[1].split(':')
+            const outTime = `${time[0]}:${time[1]}`
+            const outDate = `${date[2]}.${date[1]}.${date[0]}`
+            return `${outDate} ${outTime}`
+        }
+        return ''
     }
 
     render() {
@@ -92,48 +65,28 @@ class AppointmentDetail extends React.Component {
                     </thead>
                     <tbody>
                     <tr>
-                        <td>First Name</td>
-                        <td>{this.state.firstName}</td>
+                        <td>Animal Name</td>
+                        <td>{this.state.animal.name || ''}</td>
                     </tr>
                     <tr>
-                        <td>Last Name</td>
-                        <td>{this.state.lastName}</td>
+                        <td>Animal Breed</td>
+                        <td>{this.state.animal.breed || ''}</td>
                     </tr>
                     <tr>
-                        <td>Phone</td>
-                        <td>{this.state.phone}</td>
+                        <td>Animal Species</td>
+                        <td>{this.state.animal.species || ''}</td>
                     </tr>
                     <tr>
-                        <td>E-Mail</td>
-                        <td>{this.state.email}</td>
+                        <td>Owner Name</td>
+                        <td>{this.state.user.firstName || ''} {this.state.user.lastName || ''}</td>
                     </tr>
                     <tr>
-                        <td>Street</td>
-                        <td>{this.state.street}</td>
+                        <td>Owner E-Mail</td>
+                        <td>{this.state.user.email}</td>
                     </tr>
                     <tr>
-                        <td>House</td>
-                        <td>{this.state.house}</td>
-                    </tr>
-                    <tr>
-                        <td>Apartment</td>
-                        <td>{this.state.apartment}</td>
-                    </tr>
-                    <tr>
-                        <td>City</td>
-                        <td>{this.state.city}</td>
-                    </tr>
-                    <tr>
-                        <td>ZIP Code</td>
-                        <td>{this.state.postalIndex}</td>
-                    </tr>
-                    <tr>
-                        <td>County</td>
-                        <td>{this.state.county}</td>
-                    </tr>
-                    <tr>
-                        <td>Country</td>
-                        <td>{this.state.country}</td>
+                        <td>Date</td>
+                        <td>{this.reformatDateTime(this.state.appointmentDate) || "xd"}</td>
                     </tr>
                     </tbody>
                 </table>

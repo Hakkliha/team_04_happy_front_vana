@@ -23,6 +23,7 @@ class OwnerEdit extends React.Component {
             postalIndex: '',
             county: '',
             country: '',
+            roles: [],
             deleted: false,
             updated: false
         };
@@ -72,7 +73,8 @@ class OwnerEdit extends React.Component {
                 city: resData.city,
                 postalIndex: resData.postalIndex,
                 county: resData.county,
-                country: resData.country
+                country: resData.country,
+                roles: resData.roles
             })
         }
     }

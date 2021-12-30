@@ -38,19 +38,22 @@ class AnimalOwnerAdd extends React.Component {
     async handleSubmit(e) {
         e.preventDefault()
         const token = TokenService.getLocalAccessToken();
-        // Axios put request did not work with service for some reason
+        // Axios put request did not work with service for some reason'
+        let data = this.state.animal;
+        data['user'] = {id: this.state.user};
         let response = await axios({
             url: "http://localhost:8080/api/animals",
             method: "put",
-            data: this.state,
+            data: data,
             headers: {
                 'Authorization': "Bearer " + token
             }
         })
         //let response = await OwnerService.putOwner(this.state);
+        console.log(JSON.stringify(response))
         this.setState(response.data)
         this.props.listReload()
-        this.setState({updated: true})
+        this.setState({response: response.status})
     }
 
     render() {
@@ -66,7 +69,7 @@ class AnimalOwnerAdd extends React.Component {
                             <option key={element.id} value={element.id}>{element.firstName} {element.lastName}</option>
                         )}
                     </select>
-                    {this.state.response === 201 ? <Redirect to={{
+                    {this.state.response === 200 ? <Redirect to={{
                             pathname: `/animals`,
                             state: {shouldUpdate: true}
                         }}/> :

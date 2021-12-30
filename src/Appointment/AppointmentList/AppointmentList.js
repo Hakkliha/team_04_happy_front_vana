@@ -14,12 +14,32 @@ class AppointmentList extends React.Component {
             listOfAppointments: [],
         };
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.reloadList = this.reloadList.bind(this);
+    }
+
+    async reloadList() {
+        let resData = await AppointmentService.getList();
+        resData = resData.data
+        this.setState({listOfAppointments: resData});
     }
 
     async componentDidMount() {
         let resData = await AppointmentService.getList();
         resData = resData.data
+        console.log(JSON.stringify(resData))
         this.setState({listOfAppointments: resData});
+    }
+
+    reformatDateTime(input) {
+        if (input) {
+            const dateTime = input.split('T')
+            const date = dateTime[0].split('-')
+            const time = dateTime[1].split(':')
+            const outTime = `${time[0]}:${time[1]}`
+            const outDate = `${date[2]}.${date[1]}.${date[0]}`
+            return `${outDate} ${outTime}`
+        }
+        return ''
     }
 
     render() {
@@ -32,9 +52,8 @@ class AppointmentList extends React.Component {
                         <Link to={`${match.url}/create`} className="create-new-button">Create New Appointment</Link>
                     </div>
                     <Switch>
-                        <Route path={`${match.url}/create`}>
-                            <AppointmentCreate/>
-                        </Route>
+                        <Route path={`${match.url}/create`}
+                               render={(props) => <AppointmentCreate {...props} listReload={this.reloadList}/>}/>
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <AppointmentEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
@@ -50,8 +69,8 @@ class AppointmentList extends React.Component {
                                 <tbody>
                                 {this.state.listOfAppointments.map(element =>
                                     <tr key={element.id} className="info-box-tr">
-                                        <td>{element.firstName}</td>
-                                        <td>{element.lastName}</td>
+                                        <td>{element.animal.species} {element.animal.breed} {element.animal.name}</td>
+                                        <td>{this.reformatDateTime(element.appointmentDate)}</td>
                                         <td className="button-padding">
                                             <Link to={`${match.url}/${element.id}/edit`}
                                                   className="edit-btn"><EditFilled/></Link>
