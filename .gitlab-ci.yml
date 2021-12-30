@@ -21,7 +21,7 @@ build:
     - happy
   script:
     - echo "Start building App!"
-    - yarn add
+    - yarn
     - yarn run build
     - echo "Build successfully!"
   artifacts:
