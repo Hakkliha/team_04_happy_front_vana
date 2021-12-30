@@ -3,10 +3,10 @@ import "./AnimalList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import AnimalDetail from "../AnimalDetail/AnimalDetail";
 import AnimalForm from "../AnimalForm/AnimalForm";
-import axios from "axios";
 import {Button, Tooltip} from "antd";
 import {CloseOutlined, EditTwoTone, RightCircleTwoTone, SearchOutlined} from '@ant-design/icons';
 import AnimalEdit from "../AnimalEdit/AnimalEdit";
+import AnimalService from "../../services/animal.service";
 
 class AnimalList extends React.Component {
     constructor(props) {
@@ -24,33 +24,14 @@ class AnimalList extends React.Component {
 
     async reloadList() {
         this.setState({name: ''})
-        let resData = await axios({
-            method: 'get',
-            url: '/api/animals'
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
-
+        let resData = await AnimalService.getList();
+        resData = resData.data
         this.setState({listOfAnimals: resData});
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: '/api/animals'
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
+        let resData = await AnimalService.getList();
+        resData = resData.data
         console.log(resData)
         this.setState({listOfAnimals: resData});
     }
@@ -61,19 +42,8 @@ class AnimalList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        let resData = await axios({
-            method: 'get',
-            url: `/api/animals?name=${this.state.name}`
-        })
-            .then(function (response) {
-                console.log(response)
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
-
+        let resData = await AnimalService.getListSearch(this.state.name)
+        resData = resData.data
         this.setState({listOfAnimals: resData});
     }
 
@@ -87,9 +57,8 @@ class AnimalList extends React.Component {
                         <Link to={`${match.url}/create`} className="create-new-button">Create New Animal</Link>
                     </div>
                     <Switch>
-                        <Route path={`${match.url}/create`}>
-                            <AnimalForm/>
-                        </Route>
+                        <Route path={`${match.path}/create`}
+                               render={(props) => <AnimalForm {...props} listReload={this.reloadList}/>}/>
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <AnimalEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
@@ -136,9 +105,6 @@ class AnimalList extends React.Component {
           2nd <Route> here as an "index" page for all topics, or
           the page that is shown when no topic is selected */}
                 <Switch>
-                    <Route path={`${match.path}/create`}>
-
-                    </Route>
                     <Route path={`${match.path}/:topicId`} render={(props) => <AnimalDetail {...props} />}/>
                     <Route path={match.path}>
                         <h3 className="notice">Please select an Animal.</h3>

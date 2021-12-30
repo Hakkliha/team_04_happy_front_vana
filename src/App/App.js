@@ -13,6 +13,7 @@ import {LoginOutlined, LogoutOutlined} from '@ant-design/icons';
 import AppointmentList from "../Appointment/AppointmentList/AppointmentList";
 import TokenService from "../services/token.service";
 import AuthService from "../services/auth.service";
+import OwnerForm from "../Owner/OwnerForm/OwnerForm";
 
 class App extends React.Component {
     constructor(props) {
@@ -47,24 +48,46 @@ class App extends React.Component {
                                 TokenService.getLocalAccessToken() ?
                                     (
                                         <div>
-                                            <li>
-                                                <Link to="/owners"><b>Owners</b></Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/animals"><b>Animals</b></Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/appointments"><b>Appointments</b></Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/about"><b>About</b></Link>
-                                            </li>
-                                            <li>
-                                                <p onClick={this.handleLogout}><LogoutOutlined/> <b>Logout</b></p>
-                                            </li>
-                                            <li>
-                                                <Link to="/profile"><User id="usr-logo"/></Link>
-                                            </li>
+                                            {TokenService.getUserRole() === 'ROLE_ADMIN' ?
+                                                <div>
+                                                    <li>
+                                                        <Link to="/owners"><b>Owners</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/animals"><b>Animals</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/appointments"><b>Appointments</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/about"><b>About</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <p onClick={this.handleLogout}><LogoutOutlined/> <b>Logout</b>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/profile"><User id="usr-logo"/></Link>
+                                                    </li>
+                                                </div>
+                                                : <div>
+                                                    <li>
+                                                        <Link to="/animals"><b>Animals</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/appointments"><b>Appointments</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/about"><b>About</b></Link>
+                                                    </li>
+                                                    <li>
+                                                        <p onClick={this.handleLogout}><LogoutOutlined/> <b>Logout</b>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <Link to="/profile"><User id="usr-logo"/></Link>
+                                                    </li>
+                                                </div>}
                                         </div>
                                     ) :
                                     (
@@ -75,6 +98,9 @@ class App extends React.Component {
                                             <li>
                                                 <Link to="/login"><LoginOutlined/> <b>Login</b></Link>
                                             </li>
+                                            <li>
+                                                <Link to={`/user/signup`}><b>Sign Up</b></Link>
+                                            </li>
                                         </div>
                                     )
                             }
@@ -83,12 +109,12 @@ class App extends React.Component {
 
                     {TokenService.getLocalAccessToken() ? (
                         <Switch>
-                            <Route path="/about">
-                                <About/>
-                            </Route>
-                            <Route path="/owners">
+                            {TokenService.getUserRole() === 'ROLE_ADMIN' ? <Route path="/owners">
                                 <OwnerList/>
-                            </Route>
+                            </Route> : <Route path="/about">
+                                <About/>
+                            </Route>}
+
                             <Route path="/animals">
                                 <AnimalList/>
                             </Route>
@@ -98,11 +124,8 @@ class App extends React.Component {
                             <Route path="/profile">
                                 Profile
                             </Route>
-                            <Route path="/login">
-                                <Login navBarChange={this.handleLogin}/>
-                            </Route>
                             <Route path="/">
-                                <Home/>
+                                <Redirect to="/animals"/>
                             </Route>
                         </Switch>) : (
                         <Switch>
@@ -112,6 +135,9 @@ class App extends React.Component {
                             <Route path="/login">
                                 <Login navBarChange={this.handleLogin}/>
                             </Route>
+                            <Route path={`/user/signup`}>
+                                <OwnerForm/>
+                            </Route>
                             <Route path="/">
                                 <Home/>
                             </Route>
@@ -119,7 +145,7 @@ class App extends React.Component {
                     <Route path="/" render={() => (
                         this.state.redirect ? (
                             <Redirect to="/about"/>
-                        ) : (<p>1</p>))}/>
+                        ) : (<p>&nbsp;</p>))}/>
                 </div>
             </Router>
         );

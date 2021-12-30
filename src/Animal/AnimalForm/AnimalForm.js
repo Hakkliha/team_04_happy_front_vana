@@ -1,6 +1,8 @@
 import React from "react";
 import "./AnimalForm.css";
+import {Redirect} from "react-router-dom";
 import axios from "axios";
+import TokenService from "../../services/token.service";
 
 class AnimalForm extends React.Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class AnimalForm extends React.Component {
             breed: '',
             chipNr: '',
             gender: '',
-            weight: ''
+            weight: '',
+            response: 0
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,27 +23,28 @@ class AnimalForm extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === "gender") {
+            let upper = event.target.value.toUpperCase()
+            this.setState({[event.target.name]: upper});
+        } else {
+            this.setState({[event.target.name]: event.target.value});
+        }
     }
 
     async handleSubmit(e) {
         e.preventDefault()
-        let gender = await this.state.gender.toUpperCase()
-        this.setState({gender: gender})
+        const token = TokenService.getLocalAccessToken();
+        // Axios is broken again
         let reponse = await axios({
-            method: 'post',
-            url: '/api/animals',
-            data: this.state
+            url: "http://localhost:8080/api/animals",
+            method: "post",
+            data: this.state,
+            headers: {
+                'Authorization': "Bearer " + token
+            }
         })
-            .then(function (response) {
-                console.log(response)
-                return response.status + ": Animal Created";
-            })
-            .catch(function (response) {
-                console.log(response)
-                return response.status + ": Creation Failed";
-            });
-        alert(reponse)
+        this.props.listReload()
+        this.setState({response: reponse.status})
     }
 
     render() {
@@ -53,7 +57,8 @@ class AnimalForm extends React.Component {
                             Name
                         </td>
                         <td>
-                            <input type="text" name="name" value={this.state.name} onChange={this.handleChange} placeholder="Name"/>
+                            <input type="text" name="name" value={this.state.name || ''} onChange={this.handleChange}
+                                   placeholder="Name"/>
                         </td>
                     </tr>
                     <tr>
@@ -61,7 +66,8 @@ class AnimalForm extends React.Component {
                             Date of Birth
                         </td>
                         <td>
-                            <input type="date" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.handleChange}/>
+                            <input type="date" name="dateOfBirth" value={this.state.dateOfBirth || ''}
+                                   onChange={this.handleChange}/>
                         </td>
                     </tr>
                     <tr>
@@ -69,7 +75,9 @@ class AnimalForm extends React.Component {
                             Species
                         </td>
                         <td>
-                            <input type="text" name="species" value={this.state.species} onChange={this.handleChange} placeholder="Species"/>
+                            <input type="text" name="species" value={this.state.species || ''}
+                                   onChange={this.handleChange}
+                                   placeholder="Species"/>
                         </td>
                     </tr>
                     <tr>
@@ -77,7 +85,8 @@ class AnimalForm extends React.Component {
                             Breed
                         </td>
                         <td>
-                            <input type="text" name="breed" value={this.state.breed} onChange={this.handleChange} placeholder="Breed"/>
+                            <input type="text" name="breed" value={this.state.breed || ''} onChange={this.handleChange}
+                                   placeholder="Breed"/>
                         </td>
                     </tr>
                     <tr>
@@ -85,7 +94,9 @@ class AnimalForm extends React.Component {
                             Chip Number
                         </td>
                         <td>
-                            <input type="text" name="chipNr" value={this.state.chipNr} onChange={this.handleChange} placeholder="Chip Number"/>
+                            <input type="text" name="chipNr" value={this.state.chipNr || ''}
+                                   onChange={this.handleChange}
+                                   placeholder="Chip Number"/>
                         </td>
                     </tr>
                     <tr>
@@ -93,7 +104,11 @@ class AnimalForm extends React.Component {
                             Gender
                         </td>
                         <td>
-                            <input type="text" name="gender" value={this.state.gender} onChange={this.handleChange} placeholder="Gender"/>
+                            <select name="gender" placeholder="Gender" onChange={this.handleChange}
+                                    value={this.state.gender || ''}>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -101,7 +116,9 @@ class AnimalForm extends React.Component {
                             Weight
                         </td>
                         <td>
-                            <input type="number" name="weight" value={this.state.weight} onChange={this.handleChange} placeholder="Weight"/>
+                            <input type="number" name="weight" value={this.state.weight || ''}
+                                   onChange={this.handleChange}
+                                   placeholder="Weight"/>
                         </td>
                     </tr>
                     </tbody>
@@ -111,7 +128,12 @@ class AnimalForm extends React.Component {
 
                         </td>
                         <td>
-                            <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
+                            {this.state.response === 201 ? <Redirect to={{
+                                    pathname: `/animals`,
+                                    state: {shouldUpdate: true}
+                                }}/> :
+                                <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
+                            }
                         </td>
                     </tr>
                     </tfoot>

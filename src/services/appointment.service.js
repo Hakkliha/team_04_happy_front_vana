@@ -1,8 +1,8 @@
 import api from './api';
 
-class AnimalService {
+class AppointmentService {
     getList() {
-        return api.get('/animals');
+        return api.get('/appointments');
     }
 
     getListSearch(searchParam) {
@@ -26,4 +26,4 @@ class AnimalService {
     }
 }
 
-export default new AnimalService();
+export default new AppointmentService();

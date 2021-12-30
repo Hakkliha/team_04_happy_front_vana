@@ -2,7 +2,6 @@ import React from "react";
 import "./OwnerList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import OwnerDetail from "../OwnerDetail/OwnerDetail";
-import OwnerForm from "../OwnerForm/OwnerForm";
 import {Button, Tooltip} from "antd";
 import {CloseOutlined, EditFilled, RightCircleFilled, SearchOutlined} from '@ant-design/icons';
 import OwnerEdit from "../OwnerEdit/OwnerEdit";
@@ -51,12 +50,12 @@ class OwnerList extends React.Component {
                 <div className="list-w-header">
                     <div className="title-button">
                         <h2>Owners</h2>
-                        <Link to={`${match.url}/create`} className="create-new-button">Create New Owner</Link>
+                        {/* <Link to={`${match.url}/create`} className="create-new-button">Create New Owner</Link>*/}
                     </div>
                     <Switch>
-                        <Route path={`${match.url}/create`}>
+                        {/*<Route path={`${match.url}/create`}>
                             <OwnerForm/>
-                        </Route>
+                        </Route>*/}
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <OwnerEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
@@ -76,9 +75,8 @@ class OwnerList extends React.Component {
                                 <table className="link-table">
                                     <thead>
                                     <tr>
-                                        <td><b>First Name</b></td>
-                                        <td><b>Last Name</b></td>
-                                        <td><b>Phone</b></td>
+                                        <td><b>Username</b></td>
+                                        <td><b>E-mail</b></td>
                                         <td>Edit</td>
                                         <td>Details</td>
                                     </tr>
@@ -86,9 +84,8 @@ class OwnerList extends React.Component {
                                     <tbody>
                                     {this.state.listOfOwners.map(element =>
                                         <tr key={element.id} className="info-box-tr">
-                                            <td>{element.firstName}</td>
-                                            <td>{element.lastName}</td>
-                                            <td>{element.phone ? element.phone : "-"}</td>
+                                            <td>{element.username}</td>
+                                            <td>{element.email}</td>
                                             <td className="button-padding">
                                                 <Link to={`${match.url}/${element.id}/edit`}
                                                       className="edit-btn"><EditFilled/></Link>

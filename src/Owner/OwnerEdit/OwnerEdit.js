@@ -2,6 +2,8 @@ import React from "react";
 import "./OwnerEdit.css";
 import {Redirect} from "react-router-dom";
 import OwnerService from "../../services/owner.service";
+import axios from "axios";
+import TokenService from "../../services/token.service";
 
 
 class OwnerEdit extends React.Component {
@@ -9,6 +11,7 @@ class OwnerEdit extends React.Component {
         super(props);
         this.state = {
             id: '',
+            username: '',
             firstName: '',
             lastName: '',
             phone: '',
@@ -20,7 +23,8 @@ class OwnerEdit extends React.Component {
             postalIndex: '',
             county: '',
             country: '',
-            deleted: false
+            deleted: false,
+            updated: false
         };
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -30,19 +34,34 @@ class OwnerEdit extends React.Component {
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
+        console.log(this.state)
     }
 
-    async handleSubmit() {
-        let response = await OwnerService.putOwner(this.state);
-        alert(response)
+    async handleSubmit(e) {
+        e.preventDefault()
+        const token = TokenService.getLocalAccessToken();
+        // Axios put request did not work with service for some reason
+        let response = await axios({
+            url: "http://localhost:8080/api/users",
+            method: "put",
+            data: this.state,
+            headers: {
+                'Authorization': "Bearer " + token
+            }
+        })
+        //let response = await OwnerService.putOwner(this.state);
+        this.setState(response.data)
+        this.setState({updated: true})
     }
 
     async componentDidMount() {
         if (this.state.id !== this.props.match.params.topicId) {
             let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
             resData = resData.data;
+            console.log(resData)
             this.setState({
-                id: this.props.match.params.topicId,
+                id: resData.id,
+                username: resData.username,
                 firstName: resData.firstName,
                 lastName: resData.lastName,
                 phone: resData.phone,
@@ -60,7 +79,6 @@ class OwnerEdit extends React.Component {
 
     async handleDelete() {
         let res = await OwnerService.deleteOwner(this.props.match.params.topicId);
-        console.log(res.status);
         if (res.status === 200 || res.status === 204) {
             this.props.listReload()
             this.setState({deleted: true})
@@ -72,7 +90,7 @@ class OwnerEdit extends React.Component {
             <div>
                 {this.state.deleted ? <Redirect to='/owners'/> :
                     <div>
-                        <form onSubmit={this.handleSubmit} className="input-form">
+                        <form onSubmit={this.handleSubmit} className="input-form" method="put">
                             <h2>Edit</h2>
                             <table>
                                 <tbody>
@@ -181,7 +199,13 @@ class OwnerEdit extends React.Component {
                                     <td>
                                     </td>
                                     <td>
-                                        <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
+                                        {this.state.updated ?
+                                            <Redirect to={{
+                                                pathname: `/owners/${this.state.id}`,
+                                                state: {shouldUpdate: true}
+                                            }}/> :
+                                            <input type="submit" value="Submit"
+                                                   className="ant-btn-primary submit-btn"/>}
                                     </td>
                                 </tr>
                                 </tfoot>

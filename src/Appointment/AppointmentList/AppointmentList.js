@@ -3,9 +3,9 @@ import "./AppointmentList.css";
 import {Link, Route, Switch, withRouter} from "react-router-dom";
 import AppointmentDetail from "../AppointmentDetail/AppointmentDetail";
 import AppointmentCreate from "../AppointmentCreate/AppointmentCreate";
-import axios from "axios";
 import {EditFilled, RightCircleFilled} from '@ant-design/icons';
 import AppointmentEdit from "../AppointmentEdit/AppointmentEdit";
+import AppointmentService from "../../services/appointment.service";
 
 class AppointmentList extends React.Component {
     constructor(props) {
@@ -17,18 +17,8 @@ class AppointmentList extends React.Component {
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: '/api/appointments'
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                console.log(response)
-                return [];
-            });
-
+        let resData = await AppointmentService.getList();
+        resData = resData.data
         this.setState({listOfAppointments: resData});
     }
 

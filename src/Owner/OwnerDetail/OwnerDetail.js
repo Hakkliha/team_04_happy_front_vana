@@ -7,6 +7,7 @@ class OwnerDetail extends React.Component {
         super(props);
         this.state = {
             id: '',
+            username: '',
             firstName: '',
             lastName: '',
             phone: '',
@@ -28,6 +29,7 @@ class OwnerDetail extends React.Component {
         resData = resData.data
         this.setState({
             id: this.props.match.params.topicId,
+            username: resData.username,
             firstName: resData.firstName,
             lastName: resData.lastName,
             phone: resData.phone,
@@ -44,11 +46,12 @@ class OwnerDetail extends React.Component {
 
 
     async componentDidUpdate() {
-        if (this.state.id !== this.props.match.params.topicId) {
+        if (this.state.id !== this.props.match.params.topicId || this.props.location.state?.shouldUpdate) {
             let resData = await OwnerService.getOwnerDetail(this.props.match.params.topicId);
             resData = resData.data;
             this.setState({
                 id: this.props.match.params.topicId,
+                username: resData.username,
                 firstName: resData.firstName,
                 lastName: resData.lastName,
                 phone: resData.phone,
@@ -74,6 +77,10 @@ class OwnerDetail extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td>Username</td>
+                        <td>{this.state.username}</td>
+                    </tr>
                     <tr>
                         <td>First Name</td>
                         <td>{this.state.firstName}</td>

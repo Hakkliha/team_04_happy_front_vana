@@ -1,22 +1,16 @@
 import React from "react";
 import "./OwnerForm.css";
-import OwnerService from "../../services/owner.service";
+import AuthService from "../../services/auth.service";
 
 class OwnerForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName: '',
-            lastName: '',
-            phone: '',
             email: '',
-            street: '',
-            house: '',
-            apartment: '',
-            city: '',
-            postalIndex: '',
-            county: '',
-            country: ''
+            username: '',
+            password: '',
+            password1: '',
+            passError: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,14 +18,26 @@ class OwnerForm extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === 'password1' || event.target.name === 'password') {
+            if (this.state.password !== event.target.value) {
+                this.setState({[event.target.name]: event.target.value, passError: true})
+            } else {
+                this.setState({[event.target.name]: event.target.value, passError: false})
+            }
+        } else {
+            this.setState({[event.target.name]: event.target.value});
+        }
     }
 
     async handleSubmit(e) {
-        e.preventDefault()
-        let response = await OwnerService.postOwner(this.state);
-        alert(response.status)
-
+        e.preventDefault();
+        console.log(1)
+        if (this.state.passError === false && this.state.email !== '' && this.state.username !== '' && this.state.password !== '' && this.state.password1 !== '') {
+            let response = await AuthService.register(this.state.username, this.state.email, this.state.password);
+            alert(response.status)
+        } else {
+            alert("Passwords must match.")
+        }
     }
 
     render() {
@@ -39,33 +45,6 @@ class OwnerForm extends React.Component {
             <form onSubmit={this.handleSubmit} className="input-form" method="post">
                 <table>
                     <tbody>
-                    <tr>
-                        <td>
-                            First Name
-                        </td>
-                        <td>
-                            <input type="text" name="firstName" value={this.state.firstName}
-                                   onChange={this.handleChange} placeholder="First Name"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Last Name
-                        </td>
-                        <td>
-                            <input type="text" name="lastName" value={this.state.lastName} onChange={this.handleChange}
-                                   placeholder="Last Name"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Phone
-                        </td>
-                        <td>
-                            <input type="text" name="phone" value={this.state.phone} onChange={this.handleChange}
-                                   placeholder="+372 5698 4201"/>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             E-Mail
@@ -77,65 +56,32 @@ class OwnerForm extends React.Component {
                     </tr>
                     <tr>
                         <td>
-                            Street
+                            Username
                         </td>
                         <td>
-                            <input type="text" name="street" value={this.state.street} onChange={this.handleChange}
-                                   placeholder="Kuldnoka street"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            House
-                        </td>
-                        <td>
-                            <input type="text" name="house" value={this.state.house} onChange={this.handleChange}
-                                   placeholder="4B"/>
+                            <input type="text" name="username" value={this.state.username}
+                                   onChange={this.handleChange} placeholder="Username"/>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Apartment
+                            Password
                         </td>
                         <td>
-                            <input type="text" name="apartment" value={this.state.apartment}
-                                   onChange={this.handleChange} placeholder="103"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            City
-                        </td>
-                        <td>
-                            <input type="text" name="city" value={this.state.city} onChange={this.handleChange}
-                                   placeholder="Tallinn"/>
+                            <input type="password" name="password" value={this.state.password}
+                                   onChange={this.handleChange}
+                                   placeholder="Password"/>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            ZIP Code
+                            Repeat Password {this.state.passError ?
+                            <p><b>Passwords must match!</b></p> : <p>&nbsp;</p>}
                         </td>
                         <td>
-                            <input type="text" name="postalIndex" value={this.state.postalIndex}
-                                   onChange={this.handleChange} placeholder="19113"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            County
-                        </td>
-                        <td>
-                            <input type="text" name="county" value={this.state.county} onChange={this.handleChange}
-                                   placeholder="Harjumaa"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Country
-                        </td>
-                        <td>
-                            <input type="text" name="country" value={this.state.country} onChange={this.handleChange}
-                                   placeholder="Estonia"/>
+                            <input type="password" name="password1" value={this.state.password1}
+                                   onChange={this.handleChange}
+                                   placeholder="Repeat Password"/>
                         </td>
                     </tr>
                     </tbody>

@@ -2,6 +2,8 @@ import React from "react";
 import "./AnimalEdit.css";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
+import TokenService from "../../services/token.service";
+import AnimalService from "../../services/animal.service";
 
 
 class AnimalEdit extends React.Component {
@@ -16,7 +18,8 @@ class AnimalEdit extends React.Component {
             chipNr: '',
             gender: '',
             weight: '',
-            deleted: false
+            deleted: false,
+            updated: false
         };
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -25,45 +28,43 @@ class AnimalEdit extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        if (event.target.name === "gender") {
+            let upper = event.target.value.toUpperCase()
+            this.setState({[event.target.name]: upper});
+        } else {
+            this.setState({[event.target.name]: event.target.value});
+        }
     }
 
-    async handleSubmit() {
-        let gender = await this.state.gender.toUpperCase()
-        this.setState({gender: gender})
-        let reponse = await axios({
-            method: 'put',
-            url: `/api/animals/`,
-            data: this.state
+    async handleSubmit(e) {
+        e.preventDefault()
+        const token = TokenService.getLocalAccessToken();
+        // Axios put request did not work with service for some reason
+        let response = await axios({
+            url: "http://localhost:8080/api/animals",
+            method: "put",
+            data: this.state,
+            headers: {
+                'Authorization': "Bearer " + token
+            }
         })
-            .then(function (response) {
-                console.log(response)
-                return response.status + ": Update Successful";
-            })
-            .catch(function (response) {
-                console.log(response)
-                return response.status + ": Update Failed";
-            });
-        alert(reponse)
-
+        //let response = await OwnerService.putOwner(this.state);
+        this.setState(response.data)
+        this.setState({updated: true})
     }
 
     async componentDidMount() {
-        if (this.state.id !== this.props.match.params.topicId){
-            let resData = await axios({
-                method: 'get',
-                url: `/api/animals/${this.props.match.params.topicId}`
-            })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
+        if (this.state.id !== this.props.match.params.topicId) {
+            let resData = await AnimalService.getAnimalDetail(this.props.match.params.topicId);
+            resData = resData.data
+            let date = undefined;
+            if (resData.dateOfBirth) {
+                date = resData.dateOfBirth.toString().split("T")[0];
+            }
             this.setState({
                 id: this.props.match.params.topicId,
                 name: resData.name,
-                dateOfBirth: resData.dateOfBirth,
+                dateOfBirth: date ? date : "",
                 species: resData.species,
                 breed: resData.breed,
                 chipNr: resData.chipNr,
@@ -75,18 +76,7 @@ class AnimalEdit extends React.Component {
 
     async handleDelete() {
 
-        let res = await axios({
-            method: 'delete',
-            url: `/api/animals/${this.props.match.params.topicId}`
-        })
-            .then(function (response) {
-                console.log(response)
-                return true
-            })
-            .catch(function (response) {
-                console.log(response)
-                return false
-            });
+        let res = await AnimalService.deleteAnimal(this.props.match.params.topicId);
         if (res) {
             this.props.listReload()
             this.setState({deleted: true})
@@ -96,7 +86,7 @@ class AnimalEdit extends React.Component {
     render() {
         return (
             <div>
-                {this.state.deleted ? <Redirect to='/animals' /> :
+                {this.state.deleted ? <Redirect to='/animals'/> :
                     <div>
                         <form onSubmit={this.handleSubmit} className="input-form">
                             <table>
@@ -106,7 +96,8 @@ class AnimalEdit extends React.Component {
                                         Name
                                     </td>
                                     <td>
-                                        <input type="text" name="name" value={this.state.name} onChange={this.handleChange} placeholder="Name"/>
+                                        <input type="text" name="name" value={this.state.name || ''}
+                                               onChange={this.handleChange} placeholder="Name"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -114,7 +105,8 @@ class AnimalEdit extends React.Component {
                                         Date of Birth
                                     </td>
                                     <td>
-                                        <input type="date" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.handleChange}/>
+                                        <input type="date" name="dateOfBirth" value={this.state.dateOfBirth || ''}
+                                               onChange={this.handleChange}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -122,7 +114,8 @@ class AnimalEdit extends React.Component {
                                         Species
                                     </td>
                                     <td>
-                                        <input type="text" name="species" value={this.state.species} onChange={this.handleChange} placeholder="Species"/>
+                                        <input type="text" name="species" value={this.state.species || ''}
+                                               onChange={this.handleChange} placeholder="Species"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -130,7 +123,8 @@ class AnimalEdit extends React.Component {
                                         Breed
                                     </td>
                                     <td>
-                                        <input type="text" name="breed" value={this.state.breed} onChange={this.handleChange} placeholder="Breed"/>
+                                        <input type="text" name="breed" value={this.state.breed || ''}
+                                               onChange={this.handleChange} placeholder="Breed"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -138,7 +132,8 @@ class AnimalEdit extends React.Component {
                                         Chip Number
                                     </td>
                                     <td>
-                                        <input type="text" name="chipNr" value={this.state.chipNr} onChange={this.handleChange} placeholder="Chip Number"/>
+                                        <input type="text" name="chipNr" value={this.state.chipNr || ''}
+                                               onChange={this.handleChange} placeholder="Chip Number"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -146,7 +141,11 @@ class AnimalEdit extends React.Component {
                                         Gender
                                     </td>
                                     <td>
-                                        <input type="text" name="gender" value={this.state.gender} onChange={this.handleChange} placeholder="Gender"/>
+                                        <select name="gender" placeholder="Gender" onChange={this.handleChange}
+                                                value={this.state.gender || ''}>
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -154,7 +153,8 @@ class AnimalEdit extends React.Component {
                                         Weight
                                     </td>
                                     <td>
-                                        <input type="number" name="weight" value={this.state.weight} onChange={this.handleChange} placeholder="Weight"/>
+                                        <input type="number" name="weight" value={this.state.weight || ''}
+                                               onChange={this.handleChange} placeholder="Weight"/>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -163,14 +163,20 @@ class AnimalEdit extends React.Component {
                                     <td>
                                     </td>
                                     <td>
-                                        <input type="submit" value="Submit" className="ant-btn-primary submit-btn"/>
+                                        {this.state.updated ?
+                                            <Redirect to={{
+                                                pathname: `/animals/${this.state.id}`,
+                                                state: {shouldUpdate: true}
+                                            }}/> :
+                                            <input type="submit" value="Submit"
+                                                   className="ant-btn-primary submit-btn"/>}
                                     </td>
                                 </tr>
                                 </tfoot>
                             </table>
                         </form>
                         <button className="ant-btn-danger" onClick={this.handleDelete}>Delete</button>
-                    </div> }
+                    </div>}
             </div>
         )
     }

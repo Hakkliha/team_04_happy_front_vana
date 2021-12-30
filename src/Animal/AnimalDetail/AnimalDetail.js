@@ -1,6 +1,6 @@
 import React from "react";
 import "./AnimalDetail.css";
-import axios from "axios";
+import AnimalService from "../../services/animal.service";
 
 class AnimalDetail extends React.Component {
     constructor(props) {
@@ -21,21 +21,16 @@ class AnimalDetail extends React.Component {
     }
 
     cleanDate(date) {
-        let dateArr = date.toString().split('T')[0].split('-');
-        return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]}`
+        if (date) {
+            let dateArr = date.toString().split('T')[0].split('-');
+            return `${dateArr[2]}.${dateArr[1]}.${dateArr[0]}`
+        }
+        return "-"
     }
 
     async componentDidMount() {
-        let resData = await axios({
-            method: 'get',
-            url: `/api/animals/${this.props.match.params.topicId}`
-        })
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                return response.data;
-            });
+        let resData = await AnimalService.getAnimalDetail(this.props.match.params.topicId);
+        resData = resData.data
         this.setState({
             id: this.props.match.params.topicId,
             name: resData.name,
@@ -50,17 +45,9 @@ class AnimalDetail extends React.Component {
 
 
     async componentDidUpdate() {
-        if (this.state.id !== this.props.match.params.topicId) {
-            let resData = await axios({
-                method: 'get',
-                url: `/api/animals/${this.props.match.params.topicId}`
-            })
-                .then(function (response) {
-                    return response.data;
-                })
-                .catch(function (response) {
-                    return response.data;
-                });
+        if (this.state.id !== this.props.match.params.topicId || this.props.location.state?.shouldUpdate) {
+            let resData = await AnimalService.getAnimalDetail(this.props.match.params.topicId);
+            resData = resData.data
             this.setState({
                 id: this.props.match.params.topicId,
                 name: resData.name,
