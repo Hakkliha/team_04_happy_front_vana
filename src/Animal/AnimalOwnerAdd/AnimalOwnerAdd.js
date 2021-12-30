@@ -54,7 +54,6 @@ class AnimalOwnerAdd extends React.Component {
     }
 
     render() {
-        let match = this.props.match;
         return (
             <div className="list-view list-view-detail main-content">
                 <form method="put" onSubmit={this.handleSubmit}>
