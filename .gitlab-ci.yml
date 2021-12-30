@@ -1,7 +1,7 @@
 stages:
   - build
   - test
-#  - docker-build
+  #  - docker-build
   - deploy
 
 test:
@@ -21,8 +21,8 @@ build:
     - happy
   script:
     - echo "Start building App!"
-    - npm install
-    - npm run build
+    - yarn add
+    - yarn run build
     - echo "Build successfully!"
   artifacts:
     expire_in: 1 hour
