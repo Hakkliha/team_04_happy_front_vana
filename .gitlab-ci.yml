@@ -21,8 +21,8 @@ build:
     - happy
   script:
     - echo "Start building App!"
-    - yarn
-    - yarn run build
+    - npm install
+    - npm run build
     - echo "Build successfully!"
   artifacts:
     expire_in: 1 hour
