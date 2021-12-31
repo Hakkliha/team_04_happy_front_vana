@@ -51,7 +51,7 @@ class AppointmentForm extends React.Component {
         const user = (await AnimalService.getAnimalDetail(this.state.animal.id)).data.user;
         alert(this.state.appointmentDate)
         let reponse = await axios({
-            url: `http://localhost:8080/api/appointments`,
+            url: `http://13.48.57.71:8080/api/appointments`,
             method: "post",
             data: {
                 animal: this.state.animal,
