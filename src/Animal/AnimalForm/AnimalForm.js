@@ -37,7 +37,7 @@ class AnimalForm extends React.Component {
         const token = TokenService.getLocalAccessToken();
         // Axios is broken again
         let reponse = await axios({
-            url: "http://13.48.57.71:8080/api/animals",
+            url: "http://localhost:8080/api/animals",
             method: "post",
             data: {
                 name: this.state.name,
