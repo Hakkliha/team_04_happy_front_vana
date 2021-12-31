@@ -6,6 +6,7 @@ import AppointmentCreate from "../AppointmentCreate/AppointmentCreate";
 import {EditFilled, RightCircleFilled} from '@ant-design/icons';
 import AppointmentEdit from "../AppointmentEdit/AppointmentEdit";
 import AppointmentService from "../../services/appointment.service";
+import TokenService from "../../services/token.service";
 
 class AppointmentList extends React.Component {
     constructor(props) {
@@ -18,13 +19,13 @@ class AppointmentList extends React.Component {
     }
 
     async reloadList() {
-        let resData = await AppointmentService.getList();
+        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AppointmentService.getList() : await AppointmentService.getAppointmentsByUser(JSON.parse(localStorage.getItem('user')).id);
         resData = resData.data
         this.setState({listOfAppointments: resData});
     }
 
     async componentDidMount() {
-        let resData = await AppointmentService.getList();
+        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AppointmentService.getList() : await AppointmentService.getAppointmentsByUser(JSON.parse(localStorage.getItem('user')).id);
         resData = resData.data
         console.log(JSON.stringify(resData))
         this.setState({listOfAppointments: resData});

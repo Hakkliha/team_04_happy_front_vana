@@ -9,6 +9,10 @@ class AppointmentService {
         return api.get(`/appointments/${id}`);
     }
 
+    getAppointmentsByUser(id) {
+        return api.get(`/animals/userId?userId=${id}`);
+    }
+
     postAppointments(data, date = undefined) {
         if (date) {
             return api.post(`/appointments?appointmentDate=${date}`, {data});

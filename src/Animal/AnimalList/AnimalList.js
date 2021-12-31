@@ -8,6 +8,7 @@ import AnimalEdit from "../AnimalEdit/AnimalEdit";
 import AnimalService from "../../services/animal.service";
 import AnimalDetail from "../AnimalDetail/AnimalDetail";
 import AnimalOwnerAdd from "../AnimalOwnerAdd/AnimalOwnerAdd";
+import TokenService from "../../services/token.service";
 
 class AnimalList extends React.Component {
     constructor(props) {
@@ -25,13 +26,13 @@ class AnimalList extends React.Component {
 
     async reloadList() {
         this.setState({name: ''})
-        let resData = await AnimalService.getList();
+        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AnimalService.getList() : await AnimalService.getAnimalsByUser(JSON.parse(localStorage.getItem('user')).id);
         resData = resData.data
         this.setState({listOfAnimals: resData});
     }
 
     async componentDidMount() {
-        let resData = await AnimalService.getList();
+        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AnimalService.getList() : await AnimalService.getAnimalsByUser(JSON.parse(localStorage.getItem('user')).id);
         resData = resData.data
         console.log(resData)
         this.setState({listOfAnimals: resData});
@@ -43,7 +44,7 @@ class AnimalList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        let resData = await AnimalService.getListSearch(this.state.name)
+        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AnimalService.getListSearch(this.state.name) : await AnimalService.getAnimalsByUser(JSON.parse(localStorage.getItem('user')).id);
         resData = resData.data
         this.setState({listOfAnimals: resData});
     }
