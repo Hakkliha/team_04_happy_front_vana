@@ -42,7 +42,7 @@ class AnimalOwnerAdd extends React.Component {
         let data = this.state.animal;
         data['user'] = {id: this.state.user};
         let response = await axios({
-            url: "http://localhost:8080/api/animals",
+            url: "http://13.48.57.71:8080/api/animals",
             method: "put",
             data: data,
             headers: {
