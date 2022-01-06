@@ -44,7 +44,8 @@ class AnimalList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        let resData = TokenService.getUserRole() === "ROLE_ADMIN" ? await AnimalService.getListSearch(this.state.name) : await AnimalService.getAnimalsByUser(JSON.parse(localStorage.getItem('user')).id);
+        console.log(this.state.name)
+        let resData = await AnimalService.getListSearch(this.state.name);
         resData = resData.data
         this.setState({listOfAnimals: resData});
     }
@@ -56,7 +57,9 @@ class AnimalList extends React.Component {
                 <div className="list-w-header">
                     <div className="title-button">
                         <h2>Animals</h2>
-                        <Link to={`${match.url}/create`} className="create-new-button">Create New Animal</Link>
+                        {TokenService.getUserRole() === "ROLE_ADMIN" ?
+                            <Link to={`${match.url}/create`} className="create-new-button">Create New
+                                Animal</Link> : <div></div>}
                     </div>
                     <Switch>
                         <Route path={`${match.path}/create`}
@@ -66,11 +69,13 @@ class AnimalList extends React.Component {
                         <Route path={`${match.path}/:topicId/edit`}
                                render={(props) => <AnimalEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
-                            <form onSubmit={this.handleSubmit}>
-                                <input type="text" placeholder="Name" name="name" value={this.state.name}
-                                       onChange={this.handleChange}/>
+                            <form onSubmit={this.handleSubmit} method="get">
+                                {TokenService.getUserRole() === "ROLE_ADMIN" ?
+                                    <input type="text" placeholder="Name" name="name" value={this.state.name}
+                                           onChange={this.handleChange}/> : <div></div>}
                                 <Tooltip title="search">
-                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}/>
+                                    <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}
+                                            type="submit"/>
                                 </Tooltip>
                                 <Tooltip title="clear">
                                     <Button shape="circle" icon={<CloseOutlined/>} onClick={this.reloadList}/>

@@ -6,7 +6,7 @@ class AnimalService {
     }
 
     getListSearch(searchParam) {
-        return api.get(`/animals?name=${searchParam}`);
+        return api.get(`/animals/search?name=${searchParam}`);
     }
 
     getAnimalDetail(id) {

@@ -1,31 +1,29 @@
 import React from "react";
 import "./AppointmentEdit.css";
 import {Redirect} from "react-router-dom";
-import AppointmentService from "../../services/appointment.service";
+import TokenService from "../../services/token.service";
+import axios from "axios";
 
 class AppointmentEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: '',
-            firstName: '',
-            lastName: '',
-            phone: '',
-            email: '',
-            street: '',
-            house: '',
-            apartment: '',
-            city: '',
-            postalIndex: '',
-            county: '',
-            country: '',
             deleted: false
         };
         this.handleDelete = this.handleDelete.bind(this);
     }
 
     async handleDelete() {
-        let res = await AppointmentService.deleteAppointments(this.props.match.params.topicId)
+        const token = TokenService.getLocalAccessToken();
+        console.log(token)
+        let res = await axios({
+            url: `http://13.48.57.71:8080/api/appointments/${this.props.match.params.topicId}`,
+            method: "delete",
+            headers: {
+                'Authorization': "Bearer " + token
+            }
+        })
+
         if (res) {
             this.props.listReload()
             this.setState({deleted: true})

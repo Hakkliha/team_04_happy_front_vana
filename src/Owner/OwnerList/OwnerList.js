@@ -11,7 +11,8 @@ class OwnerList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            firstName: '',
+            lastName: '',
             listOfOwners: [],
         };
 
@@ -22,7 +23,7 @@ class OwnerList extends React.Component {
     }
 
     async reloadList() {
-        this.setState({name: ''})
+        this.setState({firstName: '', lastName: ''})
         let resData = await OwnerService.getList()
         this.setState({listOfOwners: resData.data});
     }
@@ -38,8 +39,7 @@ class OwnerList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        let resData = await OwnerService.getListSearch(this.state.name);
-
+        let resData = await OwnerService.getListSearch({first: this.state.firstName, last: this.state.lastName});
         this.setState({listOfOwners: resData.data});
     }
 
@@ -60,7 +60,10 @@ class OwnerList extends React.Component {
                                render={(props) => <OwnerEdit {...props} listReload={this.reloadList}/>}/>
                         <Route path={match.path}>
                             <form onSubmit={this.handleSubmit} className="search-box">
-                                <input type="text" placeholder="Name" name="name" value={this.state.name}
+                                <input type="text" placeholder="First name" name="firstName"
+                                       value={this.state.firstName}
+                                       onChange={this.handleChange}/>
+                                <input type="text" placeholder="Last name" name="lastName" value={this.state.lastName}
                                        onChange={this.handleChange}/>
                                 <Tooltip title="search">
                                     <Button shape="circle" icon={<SearchOutlined/>} onClick={this.handleSubmit}
