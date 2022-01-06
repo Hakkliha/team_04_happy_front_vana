@@ -78,11 +78,11 @@ class AppointmentDetail extends React.Component {
                     </tr>
                     <tr>
                         <td>Owner Name</td>
-                        <td>{this.state.user.firstName || ''} {this.state.user.lastName || ''}</td>
+                        <td>{this.state.user?.firstName || ''} {this.state.user?.lastName || ''}</td>
                     </tr>
                     <tr>
                         <td>Owner E-Mail</td>
-                        <td>{this.state.user.email}</td>
+                        <td>{this.state.user?.email}</td>
                     </tr>
                     <tr>
                         <td>Date</td>
