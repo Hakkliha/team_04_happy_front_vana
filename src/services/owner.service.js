@@ -6,7 +6,7 @@ class OwnerService {
     }
 
     getListSearch(searchParam) {
-        return api.get(`/users?firstName=${searchParam.first || ''}&lastName=${searchParam.last || ''}`);
+        return api.get(`/users?firstName=${searchParam || ''}&lastName=${searchParam || ''}`);
     }
 
     getOwnerDetail(id) {
