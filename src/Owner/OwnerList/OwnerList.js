@@ -39,6 +39,7 @@ class OwnerList extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
+        alert(JSON.stringify(this.state))
         let resData = await OwnerService.getListSearch({first: this.state.firstName, last: this.state.lastName});
         this.setState({listOfOwners: resData.data});
     }

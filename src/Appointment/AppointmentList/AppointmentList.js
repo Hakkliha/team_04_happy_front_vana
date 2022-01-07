@@ -50,7 +50,10 @@ class AppointmentList extends React.Component {
                 <div className="list-w-header">
                     <div className="title-button">
                         <h2>Appointments</h2>
-                        <Link to={`${match.url}/create`} className="create-new-button">Create New Appointment</Link>
+                        {TokenService.getUserRole() === "ROLE_ADMIN" ?
+                            <Link to={`${match.url}/create`} className="create-new-button">Create New
+                                Appointment</Link> : <div></div>}
+
                     </div>
                     <Switch>
                         <Route path={`${match.url}/create`}
@@ -63,19 +66,21 @@ class AppointmentList extends React.Component {
                                 <tr>
                                     <td><b>Animal</b></td>
                                     <td><b>Date</b></td>
-                                    <td>Edit</td>
+                                    {TokenService.getUserRole() === "ROLE_ADMIN" ? <td>Edit</td> :
+                                        <div style={{display: "none"}}></div>}
                                     <td>Details</td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {this.state.listOfAppointments.map(element =>
-                                    <tr key={element.id} className="info-box-tr">
-                                        <td>{element.animal.species} {element.animal.breed} {element.animal.name}</td>
-                                        <td>{this.reformatDateTime(element.appointmentDate)}</td>
-                                        <td className="button-padding">
-                                            <Link to={`${match.url}/${element.id}/edit`}
-                                                  className="edit-btn"><EditFilled/></Link>
-                                        </td>
+                                    <tr key={element.id || '-'} className="info-box-tr">
+                                        <td>{element.species || element.animal.species || '-'} {element.breed || element.animal.breed || '-'} {element.name || element.animal.name || '-'}</td>
+                                        <td>{this.reformatDateTime(element.appointmentDate) || '-'}</td>
+                                        {TokenService.getUserRole() === "ROLE_ADMIN" ? <td className="button-padding">
+                                                <Link to={`${match.url}/${element.id}/edit`}
+                                                      className="edit-btn"><EditFilled/></Link>
+                                            </td> :
+                                            <div style={{display: "none"}}></div>}
                                         <td className="button-padding">
                                             <Link
                                                 to={`${match.url}/${element.id}`}
@@ -83,7 +88,7 @@ class AppointmentList extends React.Component {
                                             </Link>
                                         </td>
                                     </tr>
-                                )}
+                                ) || 'No Appointments'}
                                 </tbody>
                             </table>
 
