@@ -9,7 +9,7 @@ class Home extends React.Component {
             <div className="main-content-home">
                 <div className="home-content-box">
                     <img src={Andmeloom} id="homepage-title" alt="AndmeLoom"/>
-                    <Link id="homepage-login" to="/login">Login2</Link>
+                    <Link id="homepage-login" to="/login">Login</Link>
                 </div>
             </div>
         )

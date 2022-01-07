@@ -97,8 +97,11 @@ class AnimalList extends React.Component {
                                             </Link>
                                         </td>
                                         <td>
-                                            <Link to={`${match.url}/${element.id}/edit`}
-                                                  className="edit-btn"><EditTwoTone/></Link>
+
+                                            {TokenService.getUserRole() === "ROLE_ADMIN" ?
+                                                <Link to={`${match.url}/${element.id}/edit`}
+                                                      className="edit-btn"><EditTwoTone/></Link> :
+                                                <p></p>}
                                         </td>
                                         <td>
                                             {TokenService.getUserRole() === "ROLE_ADMIN" ?
