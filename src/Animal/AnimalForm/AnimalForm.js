@@ -38,7 +38,7 @@ class AnimalForm extends React.Component {
         // Axios is broken again
         console.log(JSON.stringify(this.state))
         let reponse = await axios({
-            url: "http://13.48.57.71:8080/api/animals",
+            url: "http://127.0.0.1:8080/api/animals",
             method: "post",
             data: {
                 name: this.state.name,

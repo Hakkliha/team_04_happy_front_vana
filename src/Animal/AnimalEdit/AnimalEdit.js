@@ -42,7 +42,7 @@ class AnimalEdit extends React.Component {
         const token = TokenService.getLocalAccessToken();
         // Axios put request did not work with service for some reason
         let response = await axios({
-            url: "http://13.48.57.71:8080/api/animals",
+            url: "http://127.0.0.1:8080/api/animals",
             method: "put",
             data: this.state,
             headers: {

@@ -40,5 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://13.48.57.71:8080/api"
+  "proxy": "http://127.0.0.1:8080/api"
 }

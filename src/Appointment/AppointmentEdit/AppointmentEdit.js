@@ -17,7 +17,7 @@ class AppointmentEdit extends React.Component {
         const token = TokenService.getLocalAccessToken();
         console.log(token)
         let res = await axios({
-            url: `http://13.48.57.71:8080/api/appointments/${this.props.match.params.topicId}`,
+            url: `http://127.0.0.1:8080/api/appointments/${this.props.match.params.topicId}`,
             method: "delete",
             headers: {
                 'Authorization': "Bearer " + token
